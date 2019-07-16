@@ -279,11 +279,23 @@ with open(args.output, 'wb') as writer:
 			for model in models:
 				prediction = model.predict({'Image': image})
 
-				score = prediction['Scores']
-				scores.update(score)
-
+				# TODO: Dont leverage class label and instead use a heuristic / threshhold to select the top score 
 				label = prediction['Class Label']
+				score = prediction['Scores']
+
+				# if our top label is .na we move on to the next model, because the model is telling us it isnt applicable.
+				if label.endswith('.na'):
+					continue
+
 				labels.append(label)
+
+				# ignore our 'not applicable' labels since they are only helpful for training our individual classifiers
+				for key in score.keys():
+					if key.endswith('.na'):
+						score.pop(key)
+
+				scores.update(score)
+	
 
 			#write all of our predictions out to our CSV
 			if args.type == 'csv':
