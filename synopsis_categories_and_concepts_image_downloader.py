@@ -219,25 +219,23 @@ categories_and_concepts = {
 	{"shot_location_interior" : ["Indoors", "Interior", "inside"]},
 	{"shot_location_exterior" : ["Outdoors", "Exterior", "outside"]},
 
-	# all sub categories trained as a sepearate set of concepts, with their own internal 'na' categories
-
 	# Specific nature (exterior) categories if we can identify them
 	{"shot_location_exterior_beach" : ["Beach"]},
-	{"shot_location_exterior_cave" : ["Caves"]},
+	{"shot_location_exterior_canyon" : ["Canyon"]},
+	{"shot_location_exterior_cave" : ["Cave entrance"]},
 	{"shot_location_exterior_desert" : ["Desert"]},
-	{"shot_location_exterior_plains" : ["Plains"]},
-	{"shot_location_exterior_wetlands" : ["Swamp landscape", "Marsh landscape", "Bog landscape"]},
-	{"shot_location_exterior_hills" : ["Hills landscape"]},
 	{"shot_location_exterior_forest" : ["Forest"]},
+	{"shot_location_exterior_glacier" : ["Glacier"]},
+	{"shot_location_exterior_hills" : ["Hilly landscape photography -painting"]},
+	{"shot_location_exterior_lake" : ["Lake"]},
 	{"shot_location_exterior_mountains" : ["Mountains"]},
+	{"shot_location_exterior_ocean" : ["Ocean"]},
+	{"shot_location_exterior_plains" : ["Plains"]},
 	{"shot_location_exterior_polar" : ["antarctic terrain landscape -toy -map", "arctic terrain landscape -toy -map"]},
 	{"shot_location_exterior_river" : ["River"]},
-	{"shot_location_exterior_lake" : ["Lake"]},
-	{"shot_location_exterior_ocean" : ["Ocean"]},
-	{"shot_location_exterior_canyon" : ["Canyon"]},
-	{"shot_location_exterior_glacier" : ["Glacier"]},
 	{"shot_location_exterior_sky" : ["Sky"]},
-	{"shot_location_exterior_space" : ["Space"]},
+	{"shot_location_exterior_space" : ["astrophotography"]},
+	{"shot_location_exterior_wetlands" : ["Swamp landscape", "Marsh landscape", "Bog landscape"]},
 
 	# Specific township (exterior) categories if we can identify them
 	{"shot_location_exterior_city" : ["City"]},
