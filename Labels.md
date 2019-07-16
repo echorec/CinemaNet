@@ -246,9 +246,7 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 * `shot.location.exterior.office`
 * `shot.location.exterior.farm`
 * `shot.location.exterior.industrialplant`
-* `shot.location.exterior.restaurant`
-* `shot.location.exterior.bar` (or pub)
-* `shot.location.exterior.cafe`
+* `shot.location.exterior.restaurant` (exterior includes bar, cafe & restaurant)
 * `shot.location.exterior.chruch`
 * `shot.location.exterior.mosque`
 * `shot.location.exterior.synagogue`
