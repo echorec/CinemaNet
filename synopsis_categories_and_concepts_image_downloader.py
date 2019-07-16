@@ -107,8 +107,8 @@ categories_and_concepts = {
 	{ "composition_texture_synthetic" : ["synthetic texture", "technical texture"]},
 
 	# train harmonious vs dissonant in one classifier
-	{ "composition_texture_harmonious" : ["harmonious texture", "harmonious photography composition"]},
-	{ "composition_texture_dissonant" : ["dissonant texture", "chaotic texture", "disordered photography"]},
+	{ "composition.texture.harmonious" : ["harmonious texture", "harmonious photography composition", "rythmic photography","ordered pattern"]},
+	{ "composition.texture.dissonant" : ["disordered pattern", "chaotic texture", "messy pattern", "messy texture", "disordered photography"]},
 	
 	#train smooth vs rough in one classifier
 	{ "composition_texture_smooth" : ["smooth texture", "smooth photography"]},
