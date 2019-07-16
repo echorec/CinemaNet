@@ -394,7 +394,7 @@ for category_key in categories_and_concepts:
 			print "Search Terms: " + searchterms
 
 			try:
-			    os.stat("Data/download/" + catcategory_key + "/" + concept_keyegory_key)
+			    os.stat("Data/download/" + category_key + "/" + concept_key)
 			except:
 			    os.mkdir("Data/download/" + category_key + "/" + concept_key)   
 
