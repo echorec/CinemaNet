@@ -349,14 +349,15 @@ categories_and_concepts = {
 	{"shot_location_interior_cloister" : ["cloister"]},
 
 	# specific vehicle categories
-	{"shot_location_interior_car" : ["Car"]},
-	{"shot_location_interior_bus" : ["Bus"]},
-    {"shot_location_interior_truck" : ["Truck"]},
-	{"shot_location_interior_train" : ["Train"]},
+	{"shot_location_interior_car" : ["Car interior cinematography"]},
+	{"shot_location_interior_bus" : ["Crowded Bus interior"]},
+    {"shot_location_interior_truck" : ["truck driving interior"]},
+	{"shot_location_interior_train" : ["riding train interior -subway"]},
 	{"shot_location_interior_subway" : ["subway car interior"]},
-	{"shot_location_interior_boat" : ["Boat"]},
-	{"shot_location_interior_airplane" : ["Airplane"]},
-	{"shot_location_interior_spaceship" : ["Spaceship"]},
+	{"shot_location_interior_boat" : ["boat cabin interior"]},
+	{"shot_location_interior_airplane_cabin" : ["Airplane cabin",]},
+	{"shot_location_interior_airplane_cockpit" : ["Airplane cockpit pilots"]},
+	{"shot_location_interior_spacecraft" : ["spacecraft interior"]},
 	],
 
 
