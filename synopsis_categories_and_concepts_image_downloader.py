@@ -283,7 +283,11 @@ categories_and_concepts = {
 	{"shot_location_exterior_parkinglot" : ["Parking Lot"]},
 	{"shot_location_exterior_bridge" : ["Bridge"]},
 	{"shot_location_exterior_tunnel" : ["Tunnel entrance"]},
-
+	{"shot_location_exterior_military_base" : ["military barracks exterior", "military base aerial", "military base soldiers outside", "military base obstacle course"]},
+	{"shot_location_exterior_station_police" : ["police station exterior", "state trooper building", "police headquarters"]},
+	{"shot_location_exterior_station_fire" : ["police station exterior", "state trooper building", "police headquarters"]},
+	{"shot_location_exterior_prison": ["prison exterior", "prison yard prisoners", "prison yard guard", "prison fenc"]},
+	{"shot_location_exterior_courthouse": ["courthouse outside", "courthouse protest", "courthouse steps talking", "courthouse steps press conference"]},
 	# Specific vehicle (exterior) categories if we can identify them
 	{"shot_location_exterior_car" : ["Car"]},
 	{"shot_location_exterior_bus" : ["Bus"]},
