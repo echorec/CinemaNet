@@ -288,16 +288,18 @@ categories_and_concepts = {
 	{"shot_location_exterior_station_fire" : ["police station exterior", "state trooper building", "police headquarters"]},
 	{"shot_location_exterior_prison": ["prison exterior", "prison yard prisoners", "prison yard guard", "prison fenc"]},
 	{"shot_location_exterior_courthouse": ["courthouse outside", "courthouse protest", "courthouse steps talking", "courthouse steps press conference"]},
+	
 	# Specific vehicle (exterior) categories if we can identify them
 	{"shot_location_exterior_car" : ["Car"]},
 	{"shot_location_exterior_bus" : ["Bus"]},
-    {"shot_location_exterior_truck" : ["Truck"]},
+	{"shot_location_exterior_truck" : ["Truck"]},
 	{"shot_location_exterior_motorcycle" : ["Motorcycle riding"]}, #riding removes all white images background images
 	{"shot_location_exterior_bicycle" : ["Bicycle riding"]}, #riding removes all white background images
 	{"shot_location_exterior_bus" : ["Bus"]},
 	{"shot_location_exterior_train" : ["Train"]},
 	{"shot_location_exterior_boat" : ["Boat"]},
 	{"shot_location_exterior_airplane" : ["Airplane"]},
+	{"shot_location_exterior_helicopter" : ["Helicopter"]},
 	{"shot_location_exterior_spacecraft" : ["spacecraft"]},
 
 	# Specific room (interior) categories if we can identify them
