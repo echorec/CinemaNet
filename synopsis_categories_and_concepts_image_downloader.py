@@ -109,7 +109,7 @@ categories_and_concepts = {
 	# train harmonious vs dissonant in one classifier
 	{ "composition.texture.harmonious" : ["harmonious texture", "harmonious photography composition", "rythmic photography","ordered pattern"]},
 	{ "composition.texture.dissonant" : ["disordered pattern", "chaotic texture", "messy pattern", "messy texture", "disordered photography"]},
-	
+
 	#train smooth vs rough in one classifier
 	{ "composition_texture_smooth" : ["smooth texture", "smooth photography"]},
 	{ "composition_texture_rough" : ["rough texture", "rough texture photography"]},
@@ -265,7 +265,7 @@ categories_and_concepts = {
 	{"shot_location_exterior_monastery" : ["Monastery exterior"]},
 	{"shot_location_exterior_stadium" : ["stadium exterior"]},
 	{"shot_location_exterior_theater" : ["theater exterior"]},
-	{"shot_location_exterior_garage" : ["garage exterior"]},
+	{"shot_location_exterior_auto_repair_shop" : ["auto repair shop exterior"]},
 	{"shot_location_exterior_mall" : ["Mall exterior"]},
 	{"shot_location_exterior_port" : ["Port exterior" ]},
 	{"shot_location_exterior_pier" : ["Pier"]},
