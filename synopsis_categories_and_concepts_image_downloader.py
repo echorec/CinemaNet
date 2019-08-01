@@ -347,7 +347,7 @@ categories_and_concepts = {
 	{"shot_location_interior_store_aisle" : ["store aisle", "aisle shoppers"]},
 	{"shot_location_interior_store_checkout" : ["store checkout", "cashier"]},
 	{"shot_location_interior_mall" : ["mall interior", "busy mall", "shopping at mall"]},
-	{"shot_location_interior_nave" : ["nave", "people in nave", "crowded nave"]},
+	{"shot_location_interior_nave" : ["church nave", "people in church nave"]},
 	{"shot_location_interior_prayer_hall" : ["prayer hall", "call to prayer hall"]},
 	{"shot_location_interior_pulpit" : ["church pulpit", "preacher sermon", "church sermon"]},
 	{"shot_location_interior_synagogue" : ["synagogue interior","synagogue praying"]},
