@@ -357,8 +357,8 @@ categories_and_concepts = {
 	{"shot_location_interior_cloister" : ["cloister"]},
 	{"shot_location_interior_prison" : ["jail cell people", "prison interior"]},
 	{"shot_location_interior_station_police" : ["police precinct interior"]},
-	{"shot_location_interior_station_fire" : ["fire station inside"]},
-	{"shot_location_interior_military_command_center" : ["military command center",]},
+	{"shot_location_interior_station_fire" : ["fire station garage", "fire station locker room"]},
+	{"shot_location_interior_command_center" : ["command center",]},
 	{"shot_location_interior_military_barracks" : ["barracks interior", "barracks soldiers"]},
 	{"shot_location_interior_courtroom" : ["courtroom", "courtroom law and order"]},
 
