@@ -323,7 +323,7 @@ categories_and_concepts = {
 	{"shot_location_interior_auto_repair_shop" : ["auto mechanic", "auto repair shop interior"]},
 	{"shot_location_interior_factory" : ["factory line", "factory floor", "factory working"]},
 	{"shot_location_interior_warehouse" : ["warehouse jobs"]},
-	{"shot_location_interior_dungeon" : ["dungeon"]},
+	{"shot_location_interior_dungeon" : ["real castle dungeon -dragons -game -videogame -cartoon -minecraft"]},
 	{"shot_location_interior_throneroom" : ["throneroom"]},
 	{"shot_location_interior_classroom" : ["classroom"]},
 	{"shot_location_interior_cafeteria" : ["cafeteria interior", "crowded cafeteria"]},
