@@ -351,7 +351,7 @@ categories_and_concepts = {
 	{"shot_location_interior_prayer_hall" : ["prayer hall", "call to prayer hall"]},
 	{"shot_location_interior_pulpit" : ["church interior pulpit", "church interior pulpit sermon"]},
 	{"shot_location_interior_synagogue" : ["synagogue interior","synagogue praying"]},
-	{"shot_location_interior_meditation" : ["medidation room", "people meditating room"]},	
+	{"shot_location_interior_meditation" : ["temple meditation hall", "temple meditation hall prayers"]},	
 	{"shot_location_interior_grandhall" : ["grand hall interior", "crowded grand hall"]},
 	{"shot_location_interior_crypt" : ["crypt"]},
 	{"shot_location_interior_cloister" : ["cloister"]},
