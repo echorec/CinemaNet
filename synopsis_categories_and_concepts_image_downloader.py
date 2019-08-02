@@ -338,7 +338,7 @@ categories_and_concepts = {
 	{"shot_location_interior_cafe" : ["cafe interior", "cafe customerts"]},
 	{"shot_location_interior_arena" : ["arena interior", "full arena"]},
 	{"shot_location_interior_stage" : ["stage", "stage performance", "stage rehearsal", "stage solo"]},
-	{"shot_location_interior_dancefloor" : ["dancefloor", "people nightclub"]},
+	{"shot_location_interior_dancefloor" : ["people dancing nightclub", "people dancing bar"]},
 	{"shot_location_interior_airport" : ["airport travellers", "airport terminal", "airport security", "airport luggage claim"]},
 	{"shot_location_interior_station_train" : ["train station interior", "train station commuters"]},
 	{"shot_location_interior_station_bus" : ["bus station interior", "bus station waiting"]},
