@@ -352,14 +352,12 @@ categories_and_concepts = {
 	{"shot_location_interior_pulpit" : ["church interior pulpit", "church interior pulpit sermon"]},
 	{"shot_location_interior_synagogue" : ["synagogue interior","synagogue praying"]},
 	{"shot_location_interior_meditation" : ["temple meditation hall", "temple meditation hall prayers"]},	
-	{"shot_location_interior_grandhall" : ["grand hall interior", "crowded grand hall"]},
 	{"shot_location_interior_crypt" : ["crypt"]},
 	{"shot_location_interior_cloister" : ["cloister"]},
 	{"shot_location_interior_prison" : ["jail cell people", "prison interior"]},
 	{"shot_location_interior_station_police" : ["police precinct interior"]},
 	{"shot_location_interior_station_fire" : ["fire station garage", "fire station locker room"]},
 	{"shot_location_interior_command_center" : ["command center",]},
-	{"shot_location_interior_military_barracks" : ["barracks interior", "barracks soldiers"]},
 	{"shot_location_interior_courtroom" : ["courtroom", "courtroom law and order"]},
 
 	# specific vehicle categories
