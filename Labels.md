@@ -32,7 +32,7 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 
 > Color psychology and color theory
 
-#### color.saturation
+#### color.saturation ✓ 
 > How do we describe the overall saturation of the image
 * `color.saturation.desaturated`
 * `color.saturation.muted`
@@ -40,30 +40,30 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 * `color.saturation.pastel`
 * `color.saturation.saturated`
 
-#### color.theory 
+#### color.theory ✓ 
 > How do we describe the color relationship in the image
-* `color.theory.na` (not applicable)
+* `color.theory.na` (not applicable - training only)
 * `color.theory.analagous`
 * `color.theory.complementary`
 * `color.theory.monochromatic`
 
-#### color.tones 
+#### color.tones ✓ 
 > How do we describe the color temperature and tone in the image
-* `color.tones.na` (not applicable)
+* `color.tones.na` (not applicable - training only)
 * `color.tones.blackwhite`
 * `color.tones.cool`
 * `color.tones.warm`
 
-### color.key
+### color.key ✓ 
 > Does the image contain a luma or chroma key?
-* `color.key.na` (not applicable)
+* `color.key.na` (not applicable - training only)
 * `color.key.luma`
 * `color.key.green`
 * `color.key.blue`
 
-#### color.dominant
+#### color.dominant (WIP)
 > How do we describe the human readable dominant colors - using most commonly used color names
-* `color.dominant.na` (not applicable)
+* `color.dominant.na` (not applicable - training only)
 * `color.dominant.white`
 * `color.dominant.grey`
 * `color.dominant.black`
@@ -84,7 +84,7 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 
 #### composition.pattern (WIP)
 > Does the image strogly consist of a pattern, and if so, what type of pattern?
-* `composition.pattern.na` (not applicable)
+* `composition.pattern.na` (not applicable - training only)
 * `composition.pattern.fractal`
 * `composition.pattern.reflect`
 * `composition.pattern.spiral`
@@ -111,7 +111,7 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 * `composition.spatial.centered `
 * `composition.spatial.offcenter`
 
-#### composition.texture (WIP)
+#### composition.texture ✓ 
 > How can we describe the image in terms of visual texture
 * `composition.texture.natural`
 * `composition.texture.synthetic`
@@ -126,57 +126,57 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 
 >Categories and concepts dervied from cinematography and photography concepts
 
-### shot.angle
+### shot.angle 
 >How do we describe the image in terms of camera orientation and placement with respect to height?
-* `shot.angle.na` (not applicable)
+* `shot.angle.na` (not applicable - training only)
 * `shot.angle.aerial`
-* `shot.angle.birdseye`
+* ~~`shot.angle.birdseye`~~{
 * `shot.angle.high`
 * `shot.angle.eyelevel`
 * `shot.angle.low`
 
-### shot.level
+### shot.level ✓
 > How do we descrive the image in terms of camera orientation with respect to rotation along the direction of the lens?
-* `shot.level.na` (not applicable)
+* `shot.level.na` (not applicable - training only)
 * `shot.level.level`
 * `shot.level.tilted`
 
-### shot.type
+### shot.type ✓
 >How do we describe the image in terms of cinemographic shot type language?
-* `shot.type.na` (not applicable)
+* `shot.type.na` (not applicable - training only)
 * `shot.type.portrait`
 * `shot.type.twoshot`
 * `shot.type.master`
 * `shot.type.overtheshoulder`
 
-### shot.framimg
+### shot.framimg ✓
 >How do we describe the image in terms of camera proximity to the subject (typically a person)
-* `shot.framing.na` (not applicable)
+* `shot.framing.na` (not applicable - training only)
 * `shot.framing.extremecloseup`
 * `shot.framing.closeup`
 * `shot.framing.medium`
 * `shot.framing.long`
 * `shot.framing.extremelong`
 
-### shot.focus
+### shot.focus ✓
 >How do we descibe the image in terms of camera focus
-* `shot.focus.na` (not applicable)
+* `shot.focus.na` (not applicable - training only)
 * `shot.focus.deep`
 * `shot.focus.shallow`
 * `shot.focus.out`
 
-### shot.lighting (WIP)
+### shot.lighting ✓
 >How do we describe the lighting of the subject in the image
-* `shot.lighting.na` (not applicable)
+* `shot.lighting.na` (not applicable - training only)
 * `shot.lighting.soft`
 * `shot.lighting.hard`
 * `shot.lighting.lowkey`
 * `shot.lighting.highkey`
 * `shot.lighting.silhouette`
 
-### shot.subject
+### shot.subject ✓
 >What is the subject of the image, if any?
-* `shot.subject.na` (not applicable)
+* `shot.subject.na` (not applicable - training only)
 * `shot.subject.animal`
 * `shot.subject.object`
 * `shot.subject.text`
@@ -188,42 +188,42 @@ Note that inorder to label a large data set, we train image classifiers (not mul
 * `shot.subject.person.arm`
 * `shot.subject.person.hand`
 
-### shot.timeofday
+### shot.timeofday ✓
 >What is the time of day in the image, if any?
-* `shot.timeofday.na` (not applicable)
+* `shot.timeofday.na` (not applicable - training only)
 * `shot.timeofday.twilight (dawn or dusk)`
 * `shot.timeofday.day`
 * `shot.timeofday.night`
 
-### shot.weather (WIP)
+### shot.weather ✓
 >What is the weather in the image, if any?
-* `shot.weather.na` (not applicable)
+* `shot.weather.na` (not applicable - training only)
 * `shot.weather.sunny`
 * `shot.weather.cloudy`
 * `shot.weather.raining`
 * `shot.weather.snowing`
 
-### shot.location (WIP)
+### shot.location ✓
 >How do we describe the location of the subject / camera in the image, if any? Borrows heavily from ideas in Places 365
-* `shot.location.na` (not applicable)
+* `shot.location.na` (not applicable - training only)
 * `shot.location.interior` (indoors / inside)
 * `shot.location.exterior` (outdoors / outside)
 
 >Specific nature (exterior) categories if we can identify them
 * `shot.location.exterior.beach`
+* `shot.location.exterior.canyon`
 * `shot.location.exterior.cave` (cave entrance)
 * `shot.location.exterior.desert`
+* `shot.location.exterior.forest`
+* `shot.location.exterior.glacier`
+* ~~`shot.location.exterior.hills`~~
 * `shot.location.exterior.plains`
 * `shot.location.exterior.wetlands`
-* `shot.location.exterior.hills`
-* `shot.location.exterior.forest`
 * `shot.location.exterior.mountain`
 * `shot.location.exterior.polar` (artic, antartic)
 * `shot.location.exterior.river`
 * `shot.location.exterior.lake`
 * `shot.location.exterior.ocean`
-* `shot.location.exterior.canyon`
-* `shot.location.exterior.glacier`
 * `shot.location.exterior.space`
 * `shot.location.exterior.sky`
 
