@@ -55,9 +55,9 @@ categories_and_concepts = {
 	# Is the image useful for keying?
 	"color_key" : [
 	# contains NA when training
-	{ "color_key_luma" : ["luma key"]},
-	{ "color_key_green" : ["green screen", "chroma key green"]},
-	{ "color_key_blue" : ["blue screen", "chroma key blue"]},
+	{ "color_key_luma" : ["luma matte", "matte footage"]},
+	{ "color_key_green" : ["green screen footage"]},
+	{ "color_key_blue" : ["blue screen footage  -death -bsod"]},
 	],
 
 	# color.dominant is created manually
@@ -226,7 +226,6 @@ categories_and_concepts = {
 	{"shot_location_exterior_desert" : ["Desert"]},
 	{"shot_location_exterior_forest" : ["Forest"]},
 	{"shot_location_exterior_glacier" : ["Glacier"]},
-	{"shot_location_exterior_hills" : ["Hilly landscape photography -painting"]},
 	{"shot_location_exterior_lake" : ["Lake"]},
 	{"shot_location_exterior_mountains" : ["Mountains"]},
 	{"shot_location_exterior_ocean" : ["Ocean"]},
