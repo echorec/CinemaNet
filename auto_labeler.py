@@ -12,15 +12,17 @@ parser.add_argument('-m', '--modeldir', type=str, help='folder containing core m
 parser.add_argument('-i', '--imagedir', type=str, help="folder containing unlabeled images to be labeled", default="./images", required=True)
 parser.add_argument('-o', '--output', type=str, help="destination for labeled file containing multi labels", default="./labels", required=False)
 parser.add_argument('-t', '--type', type=str, help="csv or html?", default="csv", required=False)
-parser.add_argument('-pre', '--prefix', type=str, help="image url prefix, useful for adding a cloud storage provider URL for example", default="", required=False)
+parser.add_argument('-pre', '--prefix', type=str, help="image url prefix, useful for adding a cloud storage provider URLs to the CSV path", default="", required=False)
 parser.add_argument('-l', '--limit', type=int, help="limit the number of images we label - useful for testing", default="1000000000000", required=False)
 parser.add_argument('-r', '--random', type=bool, help="limit the number of images we label - useful for testing", default=False, required=False)
 parser.add_argument('-p', '--probabilities', type=bool, help="report probabilities rather than predicted class label (html only)", default=False, required=False)
+parser.add_argument('-c', '--confidence', type=int, help="the confidence score we need to meet or exceed to apply a class label to an image", default=75, required=False)
 
 args = parser.parse_args()
 
-start = time.time()
+confidence = args.confidence / 100.0
 
+start = time.time()
 
 # load our models into our models array
 dir_path = os.getcwd()
@@ -233,8 +235,8 @@ def html_footer():
 
 # open a file for writing
 
-# for reference, for multi label we want to do
-# : gs://calm-trees-123-vcm/flowers/images/5217892384_3edce91761_m.jpg,dandelion,tulip,rose
+# for reference, for multi label we want to do :
+# gs://calm-trees-123-vcm/flowers/images/5217892384_3edce91761_m.jpg,dandelion,tulip,rose
 # from https://cloud.google.com/vision/automl/docs/prepare
 
 start = time.time()
@@ -279,20 +281,21 @@ with open(args.output, 'wb') as writer:
 			for model in models:
 				prediction = model.predict({'Image': image})
 
-				# TODO: Dont leverage class label and instead use a heuristic / threshhold to select the top score 
-				label = prediction['Class Label']
 				score = prediction['Scores']
 
-				# if our top label is .na we move on to the next model, because the model is telling us it isnt applicable.
-				if label.endswith('.na'):
-					continue
-
-				labels.append(label)
-
-				# ignore our 'not applicable' labels since they are only helpful for training our individual classifiers
+				# iterate our score dictionary and check our scores against our tolerance.
+				# typically we only want 1 label from our model
+				# but some of our models are multi label - so if we are above threshold confidence include it.
+				# todo: think about this... 
 				for key in score.keys():
+					# ignore our 'not applicable' labels since they are only helpful for training our individual classifiers
 					if key.endswith('.na'):
 						score.pop(key)
+
+					else: 
+						scoreConfidence = score[key]
+						if scoreConfidence >= confidence:
+							labels.append(key)
 
 				scores.update(score)
 	
