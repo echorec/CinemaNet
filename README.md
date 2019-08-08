@@ -43,10 +43,19 @@ You can then run `python synopsis_categories_and_concepts_image_downloader.py` t
 
 This download should be roughly 7.5 GB and contain roughly 63 thousand images sorted into a folder structure for the label category and concepts. The data set then requires manually pruneing from irrelevant or off topic images from the folder structure.
 
-### Training your own model.
+## Training your own models
 
 You can follow along with the [Running Training Notes](https://github.com/Synopsis/CinemaNet/blob/master/Running%20Training%20Notes.md) to see the steps we are taking if you want to train yourself. 
 
 Sign up for Googles AutoML Vision cloud service if you want to train your own model. At the time of this writing you will get approximately $300 in free credits.
 
 See [Running Training Notes](https://github.com/Synopsis/CinemaNet/blob/master/Running%20Training%20Notes.md) for more info on training a model.
+
+### Running the Auto Labeller / Model Cleaner and other utilities
+
+If you want to use the other utilities (auto labeler / HTML prediction preview script, model metadata and label name clean up script, and label print out script) you need to install Apples `coremltools` python package.
+
+You can install via:
+
+`pip install -U coremltools`
+
