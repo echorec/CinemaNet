@@ -63,24 +63,29 @@ print("")
 Height = 224 # use the correct input image height 
 Width = 224 # use the correct input image width
 
-
+#https://github.com/python-pillow/Pillow/issues/2019
 def load_image(path, resize_to=None):
 
 	try:
-		img = PIL.Image.open(path)
-		#verify apparently breaks the image!?
-		# img.verify()
+		# img = PIL.Image.open(path)
+		# #verify apparently breaks the image!?
+		# # img.verify()
+		with open(path, 'rb') as f:
+		    img = PIL.Image.open(f)
+		    # We need to consume the whole file inside the `with` statement
+		    img.load()
+
 
 	except Exception:
 		print('Unable to load image' + path)
-		return None
+		return [None, f]
 
 	if resize_to is not None:
 		try:
 			img = img.resize(resize_to, PIL.Image.ANTIALIAS)
 		except Exception:
 			print('Unable to resize image' + path)
-			return None
+			return [None, f]
 
 	# ensure we pass our image as RGB - some images might be single channel or RGBA
 	if img.mode != 'RGB':
@@ -88,9 +93,9 @@ def load_image(path, resize_to=None):
 			img = img.convert(mode='RGB')
 		except Exception:
 			print('Unable to convert image to RGB' + path)
-			return None
+			return [None, f]
 
-	return img
+	return [img, f]
 
 def html_header(): 
 	html_header = """
@@ -267,7 +272,7 @@ with open(args.output, 'wb') as writer:
 		all_files = all_files[:args.limit]
 
 	for filepath in all_files:
-		image = load_image(filepath, resize_to=(Width, Height))
+		image, file = load_image(filepath, resize_to=(Width, Height))
 		if image != None:
 			labels = []
 			scores = {}
@@ -295,9 +300,15 @@ with open(args.output, 'wb') as writer:
 					else: 
 						scoreConfidence = score[key]
 						if scoreConfidence >= confidence:
-							labels.append(key)
+							if len(key) > 32:
+								head, sep_, tail = key.partition('.')
+								labels.append(tail.replace('.', '_'))
+
+							else:
+								labels.append(key.replace('.', '_'))
 
 				scores.update(score)
+				del prediction
 	
 
 			#write all of our predictions out to our CSV
@@ -313,6 +324,9 @@ with open(args.output, 'wb') as writer:
 
 			print("labeled " + filepath)
 
+			# https://github.com/python-pillow/Pillow/issues/2019
+			del image
+			file.close()
 
 	if args.type == 'html':
 	 		writer.write(html_footer())
