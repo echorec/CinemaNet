@@ -6,6 +6,8 @@ import coremltools
 import random
 import math
 import time
+import gc
+from Foundation import NSAutoreleasePool
 
 parser = argparse.ArgumentParser(description='Use a folder of ML model classifiers to label a local unlabeled data set')
 parser.add_argument('-m', '--modeldir', type=str, help='folder containing core ml models to use as labelers. Each image to label will be run through each model', default='./Models/Classifiers/Cleaned/', required=False)
@@ -272,6 +274,10 @@ with open(args.output, 'wb') as writer:
 		all_files = all_files[:args.limit]
 
 	for filepath in all_files:
+
+		pool = NSAutoreleasePool.alloc().init()
+
+
 		image, file = load_image(filepath, resize_to=(Width, Height))
 		if image != None:
 			labels = []
@@ -326,7 +332,11 @@ with open(args.output, 'wb') as writer:
 
 			# https://github.com/python-pillow/Pillow/issues/2019
 			del image
-			file.close()
+			gc.collect()
+	
+		file.close()
+
+		pool.release()
 
 	if args.type == 'html':
 	 		writer.write(html_footer())
