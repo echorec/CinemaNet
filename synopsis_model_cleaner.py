@@ -49,7 +49,8 @@ labelReplaceMap = {
 					'composition.color' : 'color',
 					'location.exterior' : 'shot.location.exterior',
 					'interior.' : 'shot.location.interior.',
-					
+					'exterior.' : 'shot.location.exterior.',
+
 					# VGG DTD to synopsis label format
 					'banded' : 'pattern.banded',
 					'blotchy' : 'pattern.blotchy',
