@@ -10,7 +10,7 @@ import gc
 from Foundation import NSAutoreleasePool
 
 parser = argparse.ArgumentParser(description='Use a folder of ML model classifiers to label a local unlabeled data set')
-parser.add_argument('-m', '--modeldir', type=str, help='folder containing core ml models to use as labelers. Each image to label will be run through each model', default='./Models/Classifiers/Cleaned/', required=False)
+parser.add_argument('-m', '--modeldir', type=str, help='folder containing core ml models to use as labelers. Each image to label will be run through each model', default='../Models/Classifiers/Cleaned/', required=False)
 parser.add_argument('-i', '--imagedir', type=str, help="folder containing unlabeled images to be labeled", default="./images", required=True)
 parser.add_argument('-o', '--output', type=str, help="destination for labeled file containing multi labels", default="./labels", required=False)
 parser.add_argument('-t', '--type', type=str, help="csv or html?", default="csv", required=False)
