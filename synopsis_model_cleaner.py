@@ -34,10 +34,10 @@ print('Loading Models from: ' + models_path)
 # autoML labels get cliped when uploading a zip / folder and can't contain '.' separators. 
 # note source AutoML models have older label names so they might not exactly match what we landed on for launch
 labelsToUpdateMap = { 
-					'composition_color_theory_analago' : 'composition_color_theory_analagous',
-					'composition_color_theory_complem' : 'composition_color_theory_complementary',
-					'composition_color_theory_monochr' : 'composition_color_theory_monochrome',
-					'composition_color_tones_blackwhi' : 'composition_color_tones_blackwhite',
+					'composition_color_theory_analago' : 'color_theory_analagous',
+					'composition_color_theory_complem' : 'color_theory_complementary',
+					'composition_color_theory_monochr' : 'color_theory_monochrome',
+					'composition_color_tones_blackwhi' : 'color_tones_blackwhite',
 					}			
 
 # Weve refactored our label names a bit, and also due to how AutoML clips labels
@@ -46,62 +46,70 @@ labelsToUpdateMap = {
 # This sucks and makes it messy as hell
 
 labelReplaceMap = {
+					'composition.texture' : 'texture',
 					'composition.color' : 'color',
-					'location.exterior' : 'shot.location.exterior',
-					'interior.' : 'shot.location.interior.',
-					'exterior.' : 'shot.location.exterior.',
+					'location.exterior' : 'exterior',
+					'shot.location.interior' : 'interior',
+					'shot.location.exterior' : 'exterior',
+
+					# derp
+					'shot.type.over.the.shoulder' : 'shot.type.overtheshoulder',
+
+
+					# 'interior.' : 'shot.location.interior.',
+					# 'exterior.' : 'shot.location.exterior.',
 
 					# VGG DTD to synopsis label format
-					'banded' : 'pattern.banded',
-					'blotchy' : 'pattern.blotchy',
-					'bumpy' : 'pattern.bumpy',
-					'braided' : 'pattern.braided',
-					'bubbly' : 'pattern.bubbly',
-					'bumpy' :'pattern.bumpy',
-					'chequered' : 'pattern.chequered',
-					'cobwebbed' : 'pattern.cobwebbed',
-					'cracked' : 'pattern.cracked',
-					'crosshatched' : 'pattern.crosshatched',
-					'crystalline' : 'pattern.crystalline',
-					'dotted' : 'pattern.dotted',
-					'fibrous' : 'pattern.fibrous',
-					'flecked' : 'pattern.flecked',
-					'freckled' : 'pattern.freckled',
-					'frilly' : 'pattern.frilly',
-					'gauzy' : 'pattern.gauzy',
-					'grid' : 'pattern.grid',
-					'grooved' : 'pattern.grooved',
-					'honeycombed' : 'pattern.honeycombed',
-					'interlaced' : 'pattern.interlaced',
-					'knitted' : 'pattern.knitted',
-					'lacelike' : 'pattern.lacelike',
-					'lined' : 'pattern.lined',
-					'marbled' : 'pattern.marbled',
-					'matted' : 'pattern.matted',
-					'meshed' : 'pattern.meshed',
-					'paisley' : 'pattern.paisley',
-					'perforated' : 'pattern.perforated',
-					'pitted' : 'pattern.pitted',
-					'pleated' : 'pattern.pleated',
+					'banded' : 'texture.banded',
+					'blotchy' : 'texture.blotchy',
+					'bumpy' : 'texture.bumpy',
+					'braided' : 'texture.braided',
+					'bubbly' : 'texture.bubbly',
+					'bumpy' :'texture.bumpy',
+					'chequered' : 'texture.chequered',
+					'cobwebbed' : 'texture.cobwebbed',
+					'cracked' : 'texture.cracked',
+					'crosshatched' : 'texture.crosshatched',
+					'crystalline' : 'texture.crystalline',
+					'dotted' : 'texture.dotted',
+					'fibrous' : 'texture.fibrous',
+					'flecked' : 'texture.flecked',
+					'freckled' : 'texture.freckled',
+					'frilly' : 'texture.frilly',
+					'gauzy' : 'texture.gauzy',
+					'grid' : 'texture.grid',
+					'grooved' : 'texture.grooved',
+					'honeycombed' : 'texture.honeycombed',
+					'interlaced' : 'texture.interlaced',
+					'knitted' : 'texture.knitted',
+					'lacelike' : 'texture.lacelike',
+					'lined' : 'texture.lined',
+					'marbled' : 'texture.marbled',
+					'matted' : 'texture.matted',
+					'meshed' : 'texture.meshed',
+					'paisley' : 'texture.paisley',
+					'perforated' : 'texture.perforated',
+					'pitted' : 'texture.pitted',
+					'pleated' : 'texture.pleated',
 					# note we double up labelling poklka dotted as dotted :X 
 					# This means we are N-1 labels 
-					'polka.dotted' : 'pattern.dotted',
-					'porous' : 'pattern.porous',
-					'potholed' : 'pattern.potholed',
-					'scaly' : 'pattern.scaly',
-					'smeared' : 'pattern.smeared',
-					'spiralled' : 'pattern.spiralled',
-					'sprinkled' : 'pattern.sprinkled',
-					'stained' : 'pattern.stained',
-					'stratified' : 'pattern.stratified',
-					'striped' : 'pattern.striped',
-					'studded' : 'pattern.studded',
-					'swirly' : 'pattern.swirly',
-					'veined' : 'pattern.veined',
-					'waffled' : 'pattern.waffled',
-					'woven' : 'pattern.woven',
-					'wrinkled' : 'pattern.wrinkled',
-					'zigzagged' : 'pattern.zigzagged',
+					'polka.dotted' : 'texture.dotted',
+					'porous' : 'texture.porous',
+					'potholed' : 'texture.potholed',
+					'scaly' : 'texture.scaly',
+					'smeared' : 'texture.smeared',
+					'spiralled' : 'texture.spiralled',
+					'sprinkled' : 'texture.sprinkled',
+					'stained' : 'texture.stained',
+					'stratified' : 'texture.stratified',
+					'striped' : 'texture.striped',
+					'studded' : 'texture.studded',
+					'swirly' : 'texture.swirly',
+					'veined' : 'texture.veined',
+					'waffled' : 'texture.waffled',
+					'woven' : 'texture.woven',
+					'wrinkled' : 'texture.wrinkled',
+					'zigzagged' : 'texture.zigzagged',
 }
 
 def updateModel(originalModelFileName):
@@ -207,7 +215,11 @@ def updateModel(originalModelFileName):
 
 model_paths = []
 
-for filename in os.listdir(models_path):
+filepaths = os.listdir(models_path)
+
+filepaths.sort()
+
+for filename in filepaths:
 	if filename.endswith('.mlmodel'):	
 		model_path = filename
 
