@@ -99,7 +99,20 @@ func runInferenceForImages()
 
     if let possibleImageURLSToLoad = fileManager.enumerator(at: imagesURL, includingPropertiesForKeys: [], options: .skipsHiddenFiles)
     {
-        for case let imageURL as Foundation.URL in possibleImageURLSToLoad
+        var imageURLSToLoad = possibleImageURLSToLoad.allObjects
+        
+        if random
+        {
+            imageURLSToLoad = imageURLSToLoad.shuffled()
+        }
+        
+        if limit < imageURLSToLoad.count
+        {
+            imageURLSToLoad = Array( imageURLSToLoad[0..<limit] )
+        }
+        
+        print(imageURLSToLoad)
+        for case let imageURL as Foundation.URL in imageURLSToLoad
         {
             if count > limit
             {
@@ -181,9 +194,24 @@ func runInferenceForImageAt(imageURL:Foundation.URL)
                     // TODO: use our confidence score
                     if observation.confidence >= confidence
                     {
+                        //
                         if !observation.identifier.hasSuffix(".na")
                         {
-                            results.append( observation.identifier )
+                            var label = observation.identifier
+                            // Move our string to Google AutoML format.
+                            // Cant have '.' separators (whyyyy)
+                            // Cant be longer than 32 characters (whyyy)
+                            if label.count > 32
+                            {
+                                if let first = label.firstIndex(of: ".")?.encodedOffset
+                                {
+                                    label = String(label.dropFirst(first))
+                                }
+                            }
+
+                            label = label.replacingOccurrences(of: ".", with: "_")
+                            
+                            results.append( label )
                         }
                     }
                 }
