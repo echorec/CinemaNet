@@ -64,13 +64,13 @@ categories_and_concepts = {
 
 	"composition_pattern" : [
 	# contains NA when training
-	{ "composition_pattern_tile" : ["tiled texture", "tiled photography"]},
-	{ "composition_pattern_spiral" : ["spiral texture", "spiral nature photography"]},
+	{ "composition_pattern_tile" : ["tiled patterns"]},
+	{ "composition_pattern_spiral" : ["spiral patterns",]},
 	# needs better search terms?
-	{ "composition_pattern_reflect" : ["glide reflection pattern"]},
-	{ "composition_pattern_stripe" : ["striped pattern", "stripes photography"]},
-	{ "composition_pattern_spot" : ["spot texture", "spotted animal"]},
-	{ "composition_pattern_fractal" : ["fractal texture", "fractal lens photography"]},
+	# { "composition_pattern_reflect" : ["glide reflection pattern"]},
+	{ "composition_pattern_stripe" : ["striped patterns"]},
+	{ "composition_pattern_spot" : ["spot patterns", "dot patterns"]},
+	{ "composition_pattern_fractal" : ["fractal patterns"]},
 	],
 
 	"composition_spatial" : [
