@@ -5,8 +5,8 @@ from coremltools.models import datatypes
 
 
 parser = argparse.ArgumentParser(description='Clean up a folder of ML model classifiers and fix label names, add metadata to mlmodels and fix tensor names')
-parser.add_argument('-m', '--modeldir', type=str, help='folder containing core ml models to clean', default='./Models/Classifiers/AutoML/', required=False)
-parser.add_argument('-o', '--outputdir', type=str, help='folder containing core ml models to clean', default='./Models/Classifiers/Cleaned/', required=False)
+parser.add_argument('-m', '--modeldir', type=str, help='folder containing core ml models to clean', default='../Models/Classifiers/AutoML/', required=False)
+parser.add_argument('-o', '--outputdir', type=str, help='folder containing core ml models to clean', default='../Models/Classifiers/Cleaned/', required=False)
 
 
 args = parser.parse_args()
