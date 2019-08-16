@@ -277,6 +277,10 @@ with open(args.output, 'wb') as writer:
 
 		pool = NSAutoreleasePool.alloc().init()
 
+		filename = os.path.basename( filepath )
+		dirname = os.path.basename ( os.path.dirname( filepath ) )
+
+		# print(dirname)
 
 		image, file = load_image(filepath, resize_to=(Width, Height))
 		if image != None:
@@ -294,27 +298,47 @@ with open(args.output, 'wb') as writer:
 
 				score = prediction['Scores']
 
+				# print(score)
+
+
 				# iterate our score dictionary and check our scores against our tolerance.
 				# typically we only want 1 label from our model
 				# but some of our models are multi label - so if we are above threshold confidence include it.
 				# todo: think about this... 
+				max_score = 0.0
+				max_score_key = None
 				for key in score.keys():
-					# ignore our 'not applicable' labels since they are only helpful for training our individual classifiers
-					if key.endswith('.na'):
-						score.pop(key)
 
-					else: 
-						scoreConfidence = score[key]
-						if scoreConfidence >= confidence:
-							if len(key) > 32:
-								head, sep_, tail = key.partition('.')
-								labels.append(tail.replace('.', '_'))
+					# todo - check if our image path is one of the labels.
+					# if it is set the confidence to 1 for that label and set the key to that label
+					# this ensures our manually pruned shit sticks with every fold
+					if dirname == key.replace('.', '_'):
+						print("FORCING LABEL")
+						max_score = 1.0
+						max_score_key = key
 
-							else:
-								labels.append(key.replace('.', '_'))
+
+					current_score = score[key]
+					if current_score > max_score:
+						max_score = current_score
+						max_score_key = key
+
+				if max_score_key.endswith('.na'):
+					score.pop(max_score_key)
+
+				else: 
+					if max_score >= confidence:
+						if len(max_score_key) > 32:
+							head, sep_, tail = max_score_key.partition('.')
+							labels.append(tail.replace('.', '_'))
+
+						else:
+							labels.append(max_score_key.replace('.', '_'))
 
 				scores.update(score)
+
 				del prediction
+
 	
 
 			#write all of our predictions out to our CSV
