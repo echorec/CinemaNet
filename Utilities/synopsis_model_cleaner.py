@@ -161,10 +161,10 @@ def updateModel(originalModelFileName):
 
 	for i in range(len(spec.neuralNetworkClassifier.layers)):
 
-	    if spec.neuralNetworkClassifier.layers[i].input[0] == "image__0":
+	    if spec.neuralNetworkClassifier.layers[i].input[0] == "image__0" or spec.neuralNetworkClassifier.layers[i].input[0] == "NASNet_input__0":
 	        spec.neuralNetworkClassifier.layers[i].input[0] = "Image"
 
-	    if spec.neuralNetworkClassifier.layers[i].output[0] == "scores__0":
+	    if spec.neuralNetworkClassifier.layers[i].output[0] == "scores__0" or spec.neuralNetworkClassifier.layers[i].output[0] == "cinemanet_output__Sigmoid__0":
 	        spec.neuralNetworkClassifier.layers[i].output[0] = "Scores"
 
 	    if spec.neuralNetworkClassifier.layers[i].output[0] == "classLabel":
