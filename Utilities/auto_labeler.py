@@ -19,6 +19,7 @@ parser.add_argument('-l', '--limit', type=int, help="limit the number of images 
 parser.add_argument('-r', '--random', type=bool, help="limit the number of images we label - useful for testing", default=False, required=False)
 parser.add_argument('-p', '--probabilities', type=bool, help="report probabilities rather than predicted class label (html only)", default=False, required=False)
 parser.add_argument('-c', '--confidence', type=int, help="the confidence score we need to meet or exceed to apply a class label to an image", default=75, required=False)
+parser.add_argument('-s', '--randomseed', type=int, help="random seed for deterministic runs", default=42, required=False)
 
 args = parser.parse_args()
 
@@ -262,11 +263,16 @@ with open(args.output, 'wb') as writer:
 			#print os.path.join(subdir, file)
 			filepath = subdir + os.sep + file
 
-			if filepath.endswith(".jpg"):
+			if filepath.endswith(".jpg") or filepath.endswith(".jpeg"):
 				all_files.append(filepath)
+
+
+
+	all_files.sort()
 
 	#do we shuffle our files?
 	if args.random == True:
+		random.seed(args.randomseed)
 		random.shuffle(all_files)
 
 	#do we limit our file count so we can do a test run?
