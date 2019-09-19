@@ -57,39 +57,41 @@ skf = StratifiedKFold(n_splits=args.splits, shuffle=True, random_state=42)
 count = 0
 for train_index, test_index in skf.split(imagepaths, labels):
 
-	if count < 2:
+#	if count < 2:
 
-		print("Num images in stratified fold")
-		print(len(test_index))
+	print("Num images in stratified fold")
+	print(len(test_index))
 
-		fold_dir = os.path.join(os.path.join(args.output, "FOLD_"+str(count)))
+	fold_dir = os.path.join(os.path.join(args.output, "FOLD_"+str(count)))
 
-		if not os.path.exists(fold_dir):	
+	if not os.path.exists(fold_dir):	
+		try:
+			print("creating", fold_dir)
+		 	os.mkdir(fold_dir)
+		except OSError:
+			print ("Creation of the directory %s failed" % fold_dir)
+
+	for index in test_index:
+		src = imagepaths[index]
+		filename = os.path.basename( src )
+		dirname = os.path.basename ( os.path.dirname( src ) )
+
+		dest_folder = os.path.join(fold_dir, dirname)
+		dest = os.path.join( dest_folder, filename)
+		print("copy ", src, " to ", dest)
+
+		if not os.path.exists(dest_folder):
 			try:
-				print("creating", fold_dir)
-			 	os.mkdir(fold_dir)
+				print("creating", dest_folder)
+				os.mkdir(dest_folder)
 			except OSError:
-				print ("Creation of the directory %s failed" % fold_dir)
+			    print ("Creation of the directory %s failed" % dest_folder)
 
-		for index in test_index:
-			src = imagepaths[index]
-			filename = os.path.basename( src )
-			dirname = os.path.basename ( os.path.dirname( src ) )
+		copyfile(src, dest)
 
-			dest_folder = os.path.join(fold_dir, dirname)
-			dest = os.path.join( dest_folder, filename)
-			print("copy ", src, " to ", dest)
+	count = count + 1
 
-			if not os.path.exists(dest_folder):
-				try:
-					print("creating", dest_folder)
-					os.mkdir(dest_folder)
-				except OSError:
-				    print ("Creation of the directory %s failed" % dest_folder)
-
-			copyfile(src, dest)
-
-		count = count + 1
+	
 	# train_splits.append(imagepaths[test_index])
 
 # print("Num Test Splits")
