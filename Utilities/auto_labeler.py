@@ -302,7 +302,23 @@ with open(args.output, 'wb') as writer:
 			for model in models:
 				prediction = model.predict({'Image': image})
 
-				score = prediction['Scores']
+
+
+				color_classifier_output = prediction['color_classifier_output']
+				location_classifier_output = prediction['location_classifier_output']
+				shot_classifier_output = prediction['shot_classifier_output']
+				texture_classifier_output = prediction['texture_classifier_output']
+
+				# print(color_classifier_output)
+
+
+				# combine all dictionaries into one
+				color_classifier_output.update(location_classifier_output)
+				color_classifier_output.update(shot_classifier_output)
+				color_classifier_output.update(texture_classifier_output)
+				score = color_classifier_output
+
+				# score = prediction['Scores']
 
 				# print(score)
 
