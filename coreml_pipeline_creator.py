@@ -122,6 +122,114 @@ def uniqueify_model_outputs(model, input_name, output_name):
 	# update our preprocessor input too
 	spec.neuralNetworkClassifier.labelProbabilityLayerName = output_name
 
+
+	# autoML labels get cliped when uploading a zip / folder and can't contain '.' separators. 
+	# note source AutoML models have older label names so they might not exactly match what we landed on for launch
+	labelsToUpdateMap = { 
+						'composition_color_theory_analago' : 'color_theory_analagous',
+						'composition_color_theory_complem' : 'color_theory_complementary',
+						'composition_color_theory_monochr' : 'color_theory_monochrome',
+						'composition_color_tones_blackwhi' : 'color_tones_blackwhite',
+						}			
+
+	# Weve refactored our label names a bit, and also due to how AutoML clips labels
+	# we need to ensure when we run our auto_labeler.py that we get output labels that
+	# are within the length AutoML can handle.
+	# This sucks and makes it messy as hell
+
+	labelReplaceMap = {
+						'composition.texture' : 'texture',
+						'composition.color' : 'color',
+						'location.exterior' : 'exterior',
+						'shot.location.interior' : 'interior',
+						'shot.location.exterior' : 'exterior',
+
+						# derp
+						'shot.type.over.the.shoulder' : 'shot.type.overtheshoulder',
+
+
+						# 'interior.' : 'shot.location.interior.',
+						# 'exterior.' : 'shot.location.exterior.',
+
+						# VGG DTD to synopsis label format
+						'banded' : 'texture.banded',
+						'blotchy' : 'texture.blotchy',
+						'bumpy' : 'texture.bumpy',
+						'braided' : 'texture.braided',
+						'bubbly' : 'texture.bubbly',
+						'bumpy' :'texture.bumpy',
+						'chequered' : 'texture.chequered',
+						'cobwebbed' : 'texture.cobwebbed',
+						'cracked' : 'texture.cracked',
+						'crosshatched' : 'texture.crosshatched',
+						'crystalline' : 'texture.crystalline',
+						'dotted' : 'texture.dotted',
+						'fibrous' : 'texture.fibrous',
+						'flecked' : 'texture.flecked',
+						'freckled' : 'texture.freckled',
+						'frilly' : 'texture.frilly',
+						'gauzy' : 'texture.gauzy',
+						'grid' : 'texture.grid',
+						'grooved' : 'texture.grooved',
+						'honeycombed' : 'texture.honeycombed',
+						'interlaced' : 'texture.interlaced',
+						'knitted' : 'texture.knitted',
+						'lacelike' : 'texture.lacelike',
+						'lined' : 'texture.lined',
+						'marbled' : 'texture.marbled',
+						'matted' : 'texture.matted',
+						'meshed' : 'texture.meshed',
+						'paisley' : 'texture.paisley',
+						'perforated' : 'texture.perforated',
+						'pitted' : 'texture.pitted',
+						'pleated' : 'texture.pleated',
+						# note we double up labelling poklka dotted as dotted :X 
+						# This means we are N-1 labels 
+						'polka.dotted' : 'texture.dotted',
+						'porous' : 'texture.porous',
+						'potholed' : 'texture.potholed',
+						'scaly' : 'texture.scaly',
+						'smeared' : 'texture.smeared',
+						'spiralled' : 'texture.spiralled',
+						'sprinkled' : 'texture.sprinkled',
+						'stained' : 'texture.stained',
+						'stratified' : 'texture.stratified',
+						'striped' : 'texture.striped',
+						'studded' : 'texture.studded',
+						'swirly' : 'texture.swirly',
+						'veined' : 'texture.veined',
+						'waffled' : 'texture.waffled',
+						'woven' : 'texture.woven',
+						'wrinkled' : 'texture.wrinkled',
+						'zigzagged' : 'texture.zigzagged',
+	}
+
+
+	# Update our label names
+	classLabels = spec.neuralNetworkClassifier.stringClassLabels
+
+	for i in range(len(classLabels.vector)):
+		label = classLabels.vector[i]
+
+		if label in labelsToUpdateMap:
+			classLabels.vector[i] = labelsToUpdateMap[label]
+
+		if label == 'None_of_the_above':
+			classLabels.vector[i] = modelNameStripped + "_na"
+		
+		#clean up labels for production models (not for automl)
+		classLabels.vector[i] = classLabels.vector[i].replace("_", ".")
+
+		# Replace any key values weve updated
+		for labelToReplace in labelReplaceMap:
+
+			if classLabels.vector[i].startswith(labelToReplace):
+				classLabels.vector[i] = classLabels.vector[i].replace(labelToReplace, labelReplaceMap[labelToReplace])
+
+		# we dont prepend our 'TLD' for labels yet.
+		classLabels.vector[i] = 'synopsis.image.' + classLabels.vector[i]
+
+
 	return coremltools.models.MLModel(spec)
 
 
