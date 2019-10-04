@@ -1,9 +1,32 @@
 import coremltools
 from coremltools.models import datatypes
 from coremltools.models.datatypes import Dictionary, Int64, String
+import argparse
+import os
+
+parser = argparse.ArgumentParser(description='Use a folder of ML model classifiers to label a local unlabeled data set')
+parser.add_argument('-m', '--modeldir', type=str, help="folder containing models to be turned into a pipeline", default="./Models/Collab-Multi/2019_10_01_03_27_32", required=False)
+
+args = parser.parse_args()
+
+classifier_filepaths = []
+feature_extractor_filepath = ""
+
+for subdir, dirs, files in os.walk(args.modeldir):
+	for file in files:
+		filepath = subdir + os.sep + file
+
+		if "classifier" in filepath:
+			classifier_filepaths.append(filepath)
+
+		if "feature-extractor" in filepath:
+			feature_extractor_filepath = filepath
+
+
+classifier_filepaths.sort()
 
 #feature extractor as input:
-feature_extractor_model = coremltools.models.MLModel("Models/Collab-Multi/Cinemanet-2019-09-24_16_48_36-Color_feature.mlmodel")
+feature_extractor_model = coremltools.models.MLModel(feature_extractor_filepath)
 
 # update feature input to be named Image
 feature_spec = feature_extractor_model.get_spec()
@@ -16,10 +39,10 @@ feature_spec.neuralNetwork.preprocessing[0].featureName = "Image"
 
 for i in range(len(feature_spec.neuralNetwork.layers)):
 
-    if feature_spec.neuralNetwork.layers[i].input[0] == "NASNet_input__0":
+    if feature_spec.neuralNetwork.layers[i].input[0] == "mobilenetv2_1.00_224_input__0":
         feature_spec.neuralNetwork.layers[i].input[0] = "Image"
 
-    if feature_spec.neuralNetwork.layers[i].output[0] == "NASNet_input__0":
+    if feature_spec.neuralNetwork.layers[i].output[0] == "mobilenetv2_1.00_224_input__0":
         feature_spec.neuralNetwork.layers[i].output[0] = "Image"
 
 # feature_spec.neuralNetworkClassifier.preprocessing[0].featureName = "Image"        
@@ -27,12 +50,10 @@ for i in range(len(feature_spec.neuralNetwork.layers)):
 feature_extractor_model = coremltools.models.MLModel(feature_spec)
 
 
-# classifier outputs:
-
-color_classifier = coremltools.models.MLModel("Models/Collab-Multi/Cinemanet-2019-09-24_16_48_36-Color_classifier.mlmodel")
-location_classifier = coremltools.models.MLModel("Models/Collab-Multi/Cinemanet-2019-09-24_17_12_52-Location_classifier.mlmodel")
-shot_classifier = coremltools.models.MLModel("Models/Collab-Multi/Cinemanet-2019-09-24_16_54_12-Shot_classifier.mlmodel")
-texture_classifier = coremltools.models.MLModel("Models/Collab-Multi/Cinemanet-2019-09-24_16_49_19-Texture_classifier.mlmodel")
+# color_classifier = coremltools.models.MLModel("/Users/vade/Documents/Repositories/Synopsis/CinemaNet/Models/Collab-Multi/MobileNetV2/Cinemanet-2019-09-26_00_30_42-Color_classifier.mlmodel")
+# location_classifier = coremltools.models.MLModel("/Users/vade/Documents/Repositories/Synopsis/CinemaNet/Models/Collab-Multi/MobileNetV2/Cinemanet-2019-09-26_01_16_51-Location_classifier.mlmodel")
+# shot_classifier = coremltools.models.MLModel("/Users/vade/Documents/Repositories/Synopsis/CinemaNet/Models/Collab-Multi/MobileNetV2/Cinemanet-2019-09-26_00_59_06-Shot_classifier.mlmodel")
+# texture_classifier = coremltools.models.MLModel("/Users/vade/Documents/Repositories/Synopsis/CinemaNet/Models/Collab-Multi/MobileNetV2/Cinemanet-2019-09-26_00_54_19-Texture_classifier.mlmodel")
 
 # # https://forums.developer.apple.com/thread/81571#241998
 def convert_multiarray_output_to_image(spec, feature_name, is_bgr=False): 
@@ -122,121 +143,50 @@ def uniqueify_model_outputs(model, input_name, output_name):
 	# update our preprocessor input too
 	spec.neuralNetworkClassifier.labelProbabilityLayerName = output_name
 
-
-	# autoML labels get cliped when uploading a zip / folder and can't contain '.' separators. 
-	# note source AutoML models have older label names so they might not exactly match what we landed on for launch
-	labelsToUpdateMap = { 
-						'composition_color_theory_analago' : 'color_theory_analagous',
-						'composition_color_theory_complem' : 'color_theory_complementary',
-						'composition_color_theory_monochr' : 'color_theory_monochrome',
-						'composition_color_tones_blackwhi' : 'color_tones_blackwhite',
-						}			
-
-	# Weve refactored our label names a bit, and also due to how AutoML clips labels
-	# we need to ensure when we run our auto_labeler.py that we get output labels that
-	# are within the length AutoML can handle.
-	# This sucks and makes it messy as hell
-
-	labelReplaceMap = {
-						'composition.texture' : 'texture',
-						'composition.color' : 'color',
-						'location.exterior' : 'exterior',
-						'shot.location.interior' : 'interior',
-						'shot.location.exterior' : 'exterior',
-
-						# derp
-						'shot.type.over.the.shoulder' : 'shot.type.overtheshoulder',
-
-
-						# 'interior.' : 'shot.location.interior.',
-						# 'exterior.' : 'shot.location.exterior.',
-
-						# VGG DTD to synopsis label format
-						'banded' : 'texture.banded',
-						'blotchy' : 'texture.blotchy',
-						'bumpy' : 'texture.bumpy',
-						'braided' : 'texture.braided',
-						'bubbly' : 'texture.bubbly',
-						'bumpy' :'texture.bumpy',
-						'chequered' : 'texture.chequered',
-						'cobwebbed' : 'texture.cobwebbed',
-						'cracked' : 'texture.cracked',
-						'crosshatched' : 'texture.crosshatched',
-						'crystalline' : 'texture.crystalline',
-						'dotted' : 'texture.dotted',
-						'fibrous' : 'texture.fibrous',
-						'flecked' : 'texture.flecked',
-						'freckled' : 'texture.freckled',
-						'frilly' : 'texture.frilly',
-						'gauzy' : 'texture.gauzy',
-						'grid' : 'texture.grid',
-						'grooved' : 'texture.grooved',
-						'honeycombed' : 'texture.honeycombed',
-						'interlaced' : 'texture.interlaced',
-						'knitted' : 'texture.knitted',
-						'lacelike' : 'texture.lacelike',
-						'lined' : 'texture.lined',
-						'marbled' : 'texture.marbled',
-						'matted' : 'texture.matted',
-						'meshed' : 'texture.meshed',
-						'paisley' : 'texture.paisley',
-						'perforated' : 'texture.perforated',
-						'pitted' : 'texture.pitted',
-						'pleated' : 'texture.pleated',
-						# note we double up labelling poklka dotted as dotted :X 
-						# This means we are N-1 labels 
-						'polka.dotted' : 'texture.dotted',
-						'porous' : 'texture.porous',
-						'potholed' : 'texture.potholed',
-						'scaly' : 'texture.scaly',
-						'smeared' : 'texture.smeared',
-						'spiralled' : 'texture.spiralled',
-						'sprinkled' : 'texture.sprinkled',
-						'stained' : 'texture.stained',
-						'stratified' : 'texture.stratified',
-						'striped' : 'texture.striped',
-						'studded' : 'texture.studded',
-						'swirly' : 'texture.swirly',
-						'veined' : 'texture.veined',
-						'waffled' : 'texture.waffled',
-						'woven' : 'texture.woven',
-						'wrinkled' : 'texture.wrinkled',
-						'zigzagged' : 'texture.zigzagged',
-	}
-
-
 	# Update our label names
 	classLabels = spec.neuralNetworkClassifier.stringClassLabels
 
 	for i in range(len(classLabels.vector)):
 		label = classLabels.vector[i]
 
-		if label in labelsToUpdateMap:
-			classLabels.vector[i] = labelsToUpdateMap[label]
-
-		if label == 'None_of_the_above':
-			classLabels.vector[i] = modelNameStripped + "_na"
 		
 		#clean up labels for production models (not for automl)
 		classLabels.vector[i] = classLabels.vector[i].replace("_", ".")
 
-		# Replace any key values weve updated
-		for labelToReplace in labelReplaceMap:
-
-			if classLabels.vector[i].startswith(labelToReplace):
-				classLabels.vector[i] = classLabels.vector[i].replace(labelToReplace, labelReplaceMap[labelToReplace])
-
 		# we dont prepend our 'TLD' for labels yet.
-		classLabels.vector[i] = 'synopsis.image.' + classLabels.vector[i]
+		# classLabels.vector[i] = 'synopsis.image.' + classLabels.vector[i]
 
 
 	return coremltools.models.MLModel(spec)
 
 
-color_classifier = uniqueify_model_outputs(color_classifier, "color_classifier_input", "color_classifier_output")
-location_classifier = uniqueify_model_outputs(location_classifier, "location_classifier_input", "location_classifier_output")
-shot_classifier = uniqueify_model_outputs(shot_classifier, "shot_classifier_input", "shot_classifier_output")
-texture_classifier = uniqueify_model_outputs(texture_classifier, "texture_classifier_input", "texture_classifier_output")
+# Load classifiers
+classifiers = []
+
+output_features = []
+
+for classifier_path in classifier_filepaths:
+
+	classifier_name = os.path.basename(classifier_path)
+	classifier_name = classifier_name.replace("CinemaNet_", "")
+	classifier_name = classifier_name.replace("-classifier.mlmodel", "")
+
+	print classifier_name
+
+	classifier = coremltools.models.MLModel(classifier_path)
+	classifier = uniqueify_model_outputs(classifier, classifier_name + "_input", classifier_name + "_output")
+
+	classifiers.append( classifier )
+
+	#build our output features array
+	output_features.append( (classifier_name + "_output", datatypes.Dictionary(key_type=String) ) )
+
+
+
+# color_classifier = uniqueify_model_outputs(color_classifier, "color_classifier_input", "color_classifier_output")
+# location_classifier = uniqueify_model_outputs(location_classifier, "location_classifier_input", "location_classifier_output")
+# shot_classifier = uniqueify_model_outputs(shot_classifier, "shot_classifier_input", "shot_classifier_output")
+# texture_classifier = uniqueify_model_outputs(texture_classifier, "texture_classifier_input", "texture_classifier_output")
 
 
 # we will feed out input image to our feature extractor
@@ -245,39 +195,20 @@ texture_classifier = uniqueify_model_outputs(texture_classifier, "texture_classi
 
 input_features = [ ("Image" , datatypes.Array(3,224,224) )] #feature_extractor_spec.description.input[0]
 
-output_features=[ (	"color_classifier_output", datatypes.Dictionary(key_type=String) ),
-					("location_classifier_output", datatypes.Dictionary(key_type=String) ),
-					("shot_classifier_output",datatypes.Dictionary(key_type=String) ),
-					("texture_classifier_output", datatypes.Dictionary(key_type=String) ),
-				]
-
-class_labels = [
-	#shot angle
-	"high", "tilted", "aerial", "low",
-
-	#shot framing
-	"low","medium","close up","extreme close up","long","extreme long",
-		
-	#shot subject
-	"people", "text", "face", "person", "animal", "faces"
-
-	#shot type
-	"over the shoulder","portrait","two shot","master",
-
-	#places
-	"office building", "veterinarians office", "viaduct", "nursery", "mansion", "television studio", "mountain path", "throne room", "stable", "restaurant kitchen", "wave", "gift shop", "waiting room", "apartment building outdoor", "harbor", "topiary garden", "trench", "building facade", "tree farm", "underwater ocean deep", "attic", "heliport", "field wild", "hardware store", "storage room", "street", "physics laboratory", "kennel outdoor", "shopping mall indoor", "swimming pool indoor", "escalator indoor", "bank vault", "airport terminal", "elevator shaft", "biology laboratory", "golf course", "ice skating rink outdoor", "ski slope", "coffee shop", "balcony interior", "art school", "supermarket", "hangar outdoor", "home theater", "gazebo exterior", "forest road", "garage indoor", "museum outdoor", "garage outdoor", "islet", "sky", "bazaar outdoor", "stadium soccer", "hospital", "vineyard", "manufactured home", "amusement park", "raft", "library indoor", "porch", "alcove", "tundra", "forest path", "downtown", "berth", "bow window indoor", "jail cell", "locker room", "stadium football", "general store indoor", "sushi bar", "crevasse", "campsite", "pond", "baseball field", "butchers shop", "beach", "mountain snowy", "staircase", "farm", "swimming hole", "wind farm", "arch", "repair shop", "classroom", "badlands", "orchard", "mezzanine", "corral", "sandbox", "auto factory", "lagoon", "wheat field", "patio", "office", "general store outdoor", "church outdoor", "shopfront", "elevator door", "schoolhouse", "water park", "racecourse", "courthouse", "marsh", "beach house", "dam", "hot spring", "entrance hall", "greenhouse outdoor", "volcano", "doorway outdoor", "subway station platform", "basketball court indoor", "house", "fishpond", "pantry", "elevator lobby", "dining hall", "toyshop", "ballroom", "motel", "lock chamber", "field road", "fountain", "playground", "football field", "pizzeria", "hunting lodge outdoor", "highway", "beer garden", "bullring", "parking lot", "cockpit", "catacomb", "river", "yard", "hospital room", "martial arts gym", "rainforest", "castle", "office cubicles", "church indoor", "bus interior", "discotheque", "art gallery", "galley", "loading dock", "cabin outdoor", "assembly line", "drugstore", "arena rodeo", "hayfield", "residential neighborhood", "park", "junkyard", "oilrig", "iceberg", "desert vegetation", "beauty salon", "shower", "snowfield", "kasbah", "railroad track", "computer room", "nursing home", "conference center", "palace", "grotto", "alley", "mountain", "synagogue outdoor", "ticket booth", "fire station", "food court", "artists loft", "library outdoor", "promenade", "shoe shop", "lawn", "swamp", "arena hockey", "art studio", "bus station indoor", "bedroom", "fastfood restaurant", "phone booth", "ruin", "hotel room", "rope bridge", "bakery shop", "natural history museum", "water tower", "bridge", "restaurant patio", "banquet hall", "coast", "boathouse", "basement", "bar", "embassy", "corn field", "raceway", "industrial area", "excavation", "inn outdoor", "operating room", "botanical garden", "driveway", "barn", "construction site", "closet", "aqueduct", "fire escape", "lake natural", "skyscraper", "crosswalk", "living room", "clothing store", "chemistry lab", "courtyard", "aquarium", "butte", "legislative chamber", "kitchen", "ski resort", "pagoda", "restaurant", "army base", "archaelogical excavation", "bazaar indoor", "candy store", "barndoor", "diner outdoor", "canyon", "jewelry shop", "village", "temple asia", "wet bar", "landing deck", "lighthouse", "recreation room", "car interior", "chalet", "athletic field outdoor", "forest broadleaf", "ice cream parlor", "boxing ring", "runway", "moat water", "orchestra pit", "delicatessen", "ball pit", "parking garage indoor", "dorm room", "canal urban", "bedchamber", "campus", "booth indoor", "corridor", "boat deck", "windmill", "department store", "sauna", "waterfall", "lobby", "arena performance", "japanese garden", "ocean", "volleyball court outdoor", "vegetable garden", "parking garage outdoor", "mausoleum", "zen garden", "ice shelf", "roof garden", "server room", "conference room", "television room", "cemetery", "pharmacy", "airfield", "field cultivated", "mosque outdoor", "home office", "rock arch", "utility room", "market indoor", "pier", "ice floe", "oast house", "train interior", "flea market indoor", "clean room", "movie theater indoor", "amusement arcade", "tower", "auditorium", "shed", "creek", "dining room", "youth hostel", "burial chamber", "pasture", "tree house", "balcony exterior", "train station platform", "ice skating rink indoor", "stage outdoor", "bathroom", "slum", "desert road", "soccer field", "playroom", "florist shop indoor", "bamboo forest", "plaza", "pub indoor", "childs room", "swimming pool outdoor", "watering hole", "pet shop", "cafeteria", "arcade", "dressing room", "airplane cabin", "atrium public", "bowling alley", "valley", "museum indoor", "auto showroom", "stadium baseball", "canal natural", "greenhouse indoor", "bookstore", "cottage", "lecture room", "science museum", "formal garden", "market outdoor", "kindergarden classroom", "pavilion", "hotel outdoor", "desert sand", "rice paddy", "gymnasium indoor", "amphitheater", "boardwalk", "engine room", "hangar indoor", "archive", "beer hall", "glacier", "stage indoor", "music studio", "gas station", "carrousel", "medina", "cliff", "fabric store", "picnic area", "jacuzzi indoor", "landfill", "reception", "laundromat", "igloo",
-]
-
-
 # pipeline = coremltools.models.pipeline.PipelineClassifier(input_features, class_labels, output_features=output_features)
 
 pipeline = coremltools.models.pipeline.Pipeline(input_features, output_features)
 
 pipeline.add_model(feature_extractor_model)
-pipeline.add_model(color_classifier)
-pipeline.add_model(location_classifier)
-pipeline.add_model(shot_classifier)
-pipeline.add_model(texture_classifier)
+
+for classifier in classifiers:
+	pipeline.add_model(classifier)
+
+# pipeline.add_model(feature_extractor_model)
+# pipeline.add_model(color_classifier)
+# pipeline.add_model(location_classifier)
+# pipeline.add_model(shot_classifier)
+# pipeline.add_model(texture_classifier)
 
 
 # pipeline_spec = coremltools.proto.Model_pb2.Model()
