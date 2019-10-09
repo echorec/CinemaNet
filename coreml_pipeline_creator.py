@@ -28,10 +28,17 @@ classifier_filepaths.sort()
 #feature extractor as input:
 feature_extractor_model = coremltools.models.MLModel(feature_extractor_filepath)
 
+# our mobilenet or MNASNet feature exactor has not been fine tuned on purpose (so we can use other models dependent on imagenet features)
+feature_exactor_output = "embedding_space"
+
 # update feature input to be named Image
 feature_spec = feature_extractor_model.get_spec()
 feature_spec.description.input[0].name = "Image"
 feature_spec.description.input[0].shortDescription = "Input image"
+
+feature_spec.description.output[0].name = feature_exactor_output
+feature_spec.description.output[0].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
+
 
 print(feature_spec.neuralNetwork.preprocessing)
 
@@ -39,11 +46,20 @@ feature_spec.neuralNetwork.preprocessing[0].featureName = "Image"
 
 for i in range(len(feature_spec.neuralNetwork.layers)):
 
+    # feature exactor input change
     if feature_spec.neuralNetwork.layers[i].input[0] == "mobilenetv2_1.00_224_input__0":
         feature_spec.neuralNetwork.layers[i].input[0] = "Image"
 
     if feature_spec.neuralNetwork.layers[i].output[0] == "mobilenetv2_1.00_224_input__0":
         feature_spec.neuralNetwork.layers[i].output[0] = "Image"
+
+    # feature exactor output change
+    if feature_spec.neuralNetwork.layers[i].input[0] == "global_average_pooling2d__Mean__0":
+        feature_spec.neuralNetwork.layers[i].input[0] = feature_exactor_output
+
+    if feature_spec.neuralNetwork.layers[i].output[0] == "global_average_pooling2d__Mean__0":
+        feature_spec.neuralNetwork.layers[i].output[0] = feature_exactor_output
+
 
 # feature_spec.neuralNetworkClassifier.preprocessing[0].featureName = "Image"        
 
@@ -111,6 +127,9 @@ def uniqueify_model_outputs(model, input_name, output_name):
 	# Update Output names to be nicer:
 	# spec.description.input[0].name = input_name
 
+	spec.description.input[0].name = feature_exactor_output
+	spec.description.input[0].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
+
 
 	#probabilities
 	spec.description.output[0].name = output_name
@@ -127,10 +146,21 @@ def uniqueify_model_outputs(model, input_name, output_name):
 		# if spec.neuralNetworkClassifier.layers[i].input[0] == "global_average_pooling2d__Mean__0":
 		# 	spec.neuralNetworkClassifier.layers[i].input[0] = input_name
 
+		for j in range(len(spec.neuralNetworkClassifier.layers[i].input)):
+		    # feature exactor output change
+		    if spec.neuralNetworkClassifier.layers[i].input[j] == "global_average_pooling2d__Mean__0":
+		        spec.neuralNetworkClassifier.layers[i].input[j] = feature_exactor_output
+
+			# if spec.neuralNetworkClassifier.layers[i].input[j] == "cinemanet_output__Sigmoid__0":
+			# 	print("renaming output to " + output_name)
+			# 	spec.neuralNetworkClassifier.layers[i].input[j] = output_name 
+
+
 		for j in range(len(spec.neuralNetworkClassifier.layers[i].output)):
-			# if spec.neuralNetworkClassifier.layers[i].output[j] ==  "classLabel":
-				# print("renaming classLabel")
-				# spec.neuralNetworkClassifier.layers[i].output[j] = output_name + "_classLabel"
+		    # feature exactor output change
+		    # if spec.neuralNetworkClassifier.layers[i].output[j] == "global_average_pooling2d__Mean__0":
+		    #     spec.neuralNetworkClassifier.layers[i].output[j] = feature_exactor_output
+
 
 			if spec.neuralNetworkClassifier.layers[i].output[j] == "cinemanet_output__Sigmoid__0":
 				print("renaming output to " + output_name)
@@ -163,7 +193,7 @@ def uniqueify_model_outputs(model, input_name, output_name):
 # Load classifiers
 classifiers = []
 
-output_features = []
+output_features = [ (feature_exactor_output, datatypes.Array(1280)), ]
 
 for classifier_path in classifier_filepaths:
 
