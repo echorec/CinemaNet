@@ -302,30 +302,13 @@ with open(args.output, 'wb') as writer:
 			for model in models:
 				prediction = model.predict({'Image': image})
 
-
 				score = {}
 
-				for key in prediction.keys():
-					score.update( prediction[key] )
+				for group_key in prediction.keys():
 
-				# color_classifier_output = prediction['color_classifier_output']
-				# location_classifier_output = prediction['location_classifier_output']
-				# shot_classifier_output = prediction['shot_classifier_output']
-				# texture_classifier_output = prediction['texture_classifier_output']
-
-				# # print(color_classifier_output)
-
-
-				# # combine all dictionaries into one
-				# color_classifier_output.update(location_classifier_output)
-				# color_classifier_output.update(shot_classifier_output)
-				# color_classifier_output.update(texture_classifier_output)
-				# score = color_classifier_output
-
-				# score = prediction['Scores']
-
-				# print(score)
-
+					if 'embedding_space' != group_key:
+						concept_group_dict = prediction[group_key]
+						score.update( concept_group_dict )
 
 				# iterate our score dictionary and check our scores against our tolerance.
 				# typically we only want 1 label from our model
@@ -359,12 +342,13 @@ with open(args.output, 'wb') as writer:
 
 				else: 
 					if max_score >= confidence:
-						if len(max_score_key) > 32:
-							head, sep_, tail = max_score_key.partition('.')
-							labels.append(tail.replace('.', '_'))
+						labels.append(max_score_key)
+						# if len(max_score_key) > 32:
+						# 	head, sep_, tail = max_score_key.partition('.')
+						# 	labels.append(tail.replace('.', '_'))
 
-						else:
-							labels.append(max_score_key.replace('.', '_'))
+						# else:
+						# 	labels.append(max_score_key.replace('.', '_'))
 
 				scores.update(score)
 
