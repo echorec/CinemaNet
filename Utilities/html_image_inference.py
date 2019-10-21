@@ -74,9 +74,9 @@ def load_image(path, resize_to=None):
 		# #verify apparently breaks the image!?
 		# # img.verify()
 		with open(path, 'rb') as f:
-		    img = PIL.Image.open(f)
-		    # We need to consume the whole file inside the `with` statement
-		    img.load()
+			img = PIL.Image.open(f)
+			# We need to consume the whole file inside the `with` statement
+			img.load()
 
 
 	except Exception:
@@ -103,7 +103,7 @@ def load_image(path, resize_to=None):
 def html_header(): 
 	html_header = """
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+		"http://www.w3.org/TR/html4/loose.dtd">
 
 	<html>
 
@@ -177,7 +177,7 @@ def html_header():
 def html_entry_label(filepath, labels):
 	html_entry = """
 	<div class="masonry-layout__panel">
-    	<div class="masonry-layout__panel-content" align="center">
+		<div class="masonry-layout__panel-content" align="center">
 
 		<a href="file://{}"><img src="file://{}" width="100%" target="_blank"/></a><br/> {}
 		</div>
@@ -216,7 +216,7 @@ def html_entry_scores_table(items):
 def html_entry_scores(filepath, scores):
 	html_entry = """
 	<div class="masonry-layout__panel">
-    	<div class="masonry-layout__panel-content" align="center">
+		<div class="masonry-layout__panel-content" align="center">
 
 		<a href="file://{}"><img src="file://{}" width="100%" target="_blank"/></a><br/> {}
 		</div>
@@ -253,9 +253,9 @@ all_files = []
 with open(args.output, 'wb') as writer:
 
 	if args.type == 'csv':
- 		writer = csv.writer(writer)
- 	else:
- 		writer.write(html_header())
+		writer = csv.writer(writer)
+	else:
+		writer.write(html_header())
 
 	# recurse through our image directory and run inference on each image
 	for subdir, dirs, files in os.walk(args.imagedir):
@@ -378,7 +378,7 @@ with open(args.output, 'wb') as writer:
 		pool.release()
 
 	if args.type == 'html':
-	 		writer.write(html_footer())
+			writer.write(html_footer())
 
 end = time.time()
 
