@@ -7,7 +7,6 @@ import random
 import math
 import time
 import gc
-from Foundation import NSAutoreleasePool
 
 parser = argparse.ArgumentParser(description='Use a folder of ML model classifiers to label a local unlabeled data set')
 parser.add_argument('-m', '--modeldir', type=str, help='folder containing core ml models to use as labelers. Each image to label will be run through each model', default='../Models/Classifiers/Cleaned/', required=False)
@@ -281,7 +280,6 @@ with open(args.output, 'wb') as writer:
 
 	for filepath in all_files:
 
-		pool = NSAutoreleasePool.alloc().init()
 
 		filename = os.path.basename( filepath )
 		dirname = os.path.basename ( os.path.dirname( filepath ) )
@@ -316,7 +314,7 @@ with open(args.output, 'wb') as writer:
 				# todo: think about this... 
 				max_score = 0.0
 				max_score_key = None
-				for key in score.keys():
+				for key in list( score.keys() ):
 
 					if key.endswith('.na'):
 						score.pop(key)
@@ -375,7 +373,6 @@ with open(args.output, 'wb') as writer:
 	
 		file.close()
 
-		pool.release()
 
 	if args.type == 'html':
 			writer.write(html_footer())
