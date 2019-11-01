@@ -316,9 +316,9 @@ with open(args.output, 'wb') as writer:
 				max_score_key = None
 				for key in list( score.keys() ):
 
-					if key.endswith('.na'):
-						score.pop(key)
-						continue;
+					# if key.endswith('.na'):
+					# 	score.pop(key)
+					# 	continue;
 
 
 					# todo - check if our image path is one of the labels.
