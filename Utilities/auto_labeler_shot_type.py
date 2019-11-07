@@ -28,21 +28,22 @@ labels = [
 "shot_type_overtheshoulder",
 ]
 
+# MANUALLY GOING THROUGH THESE FOLDERS FOUND A FEW OUTLIERS AND ALSO THAT THESE CONCEPTS ARE ALL MUTUALLY EXCLUSIVE AS OF THIS COMMENT
 
 # list of exclusive concepts groups:
-exclusive_concepts = {
-# portrait cant contain two master of OTS
-"shot_type_portrait" : ["shot_type_portrait", "shot_type_twoshot", "shot_type_master", "shot_type_overtheshoulder"],
+# exclusive_concepts = {
+# # portrait cant contain two master of OTS
+# "shot_type_portrait" : ["shot_type_portrait", "shot_type_twoshot", "shot_type_master", "shot_type_overtheshoulder"],
 
-# two could be OTS, so remove it
-"shot_type_twoshot" : ["shot_type_portrait", "shot_type_twoshot", "shot_type_master"],
+# # two could be OTS, so remove it
+# "shot_type_twoshot" : ["shot_type_portrait", "shot_type_twoshot", "shot_type_master", "shot_type_overtheshoulder"],
 
-#master could be OTS (is that true, I guess so?)
-"shot_type_master" : ["shot_type_portrait", "shot_type_twoshot", "shot_type_master"],
+# #master could be OTS (is that true, I guess so?)
+# "shot_type_master" : ["shot_type_portrait", "shot_type_twoshot", "shot_type_master"],
 
-#OTS can't be portrait 
-"shot_type_overtheshoulder" : [ "shot_type_portrait" ]
-}
+# #OTS can't be portrait and no examples in two shot
+# "shot_type_overtheshoulder" : [ "shot_type_overtheshoulder",  "shot_type_portrait", "shot_type_twoshot" ]
+# }
 
 
 ################
@@ -60,6 +61,6 @@ not_applicable_concepts = [
 "texture"
 ]
 
-auto_label.auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applicable_concepts)
+auto_label.auto_label(args, labels, labels, not_applicable_key, not_applicable_concepts)
 
 

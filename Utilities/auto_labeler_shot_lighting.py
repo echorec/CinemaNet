@@ -41,7 +41,7 @@ exclusive_concepts = {
 "shot_lighting_key_low" : ["shot_lighting_key_high"],
 
 # silhouette can be any of the above - but neutral does not contain any examples of silhouettes
-"shot_lighting_silhouette" : ["shot_lighting_neutral"],
+"shot_lighting_silhouette" : ["shot_lighting_neutral", "shot_lighting_soft", "shot_lighting_key_high"],
 
 }
 
