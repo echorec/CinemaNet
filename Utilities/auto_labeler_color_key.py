@@ -45,15 +45,17 @@ not_applicable_concepts = [
 "color_saturation",
 "color_theory",
 "color_tones",
-"shot_angle",
-"shot_focus",
-"shot_framing",
-"shot_level",
-"shot_lighting",
-"shot_location",
-"shot_subject",
-"shot_timeofday",
-"shot_type",
+
+# NOTE: We had WAY too many images for the NA - which made the model way less confident for any actual green / blue screen images
+# "shot_angle",
+# "shot_focus",
+# "shot_framing",
+# "shot_level",
+# "shot_lighting",
+# "shot_location",
+# "shot_subject",
+# "shot_timeofday",
+# "shot_type",
 "texture",
 ]
 
