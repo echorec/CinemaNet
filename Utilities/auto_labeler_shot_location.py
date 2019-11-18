@@ -36,9 +36,9 @@ labels = [
 "shot_location_exterior_canyon",
 "shot_location_exterior_car",
 "shot_location_exterior_castle",
-"shot_location_exterior_cathedral",
+
 "shot_location_exterior_cave",
-"shot_location_exterior_church",
+
 "shot_location_exterior_city",
 "shot_location_exterior_desert",
 "shot_location_exterior_farm",
@@ -47,13 +47,14 @@ labels = [
 "shot_location_exterior_helicopter",
 "shot_location_exterior_hospital",
 "shot_location_exterior_house",
+"shot_location_exterior_houseofworship",
 "shot_location_exterior_industrial",
 "shot_location_exterior_lake",
 "shot_location_exterior_library",
 "shot_location_exterior_mall",
 "shot_location_exterior_mansion",
 "shot_location_exterior_monastery",
-"shot_location_exterior_mosque",
+
 "shot_location_exterior_motorcycle",
 "shot_location_exterior_mountains",
 "shot_location_exterior_ocean",
@@ -82,8 +83,8 @@ labels = [
 "shot_location_exterior_station_train",
 "shot_location_exterior_store",
 "shot_location_exterior_suburb",
-"shot_location_exterior_synagogue",
-"shot_location_exterior_temple",
+
+
 "shot_location_exterior_theater",
 "shot_location_exterior_town",
 "shot_location_exterior_train",
@@ -109,7 +110,7 @@ labels = [
 "shot_location_interior_car",
 "shot_location_interior_cave",
 "shot_location_interior_classroom",
-"shot_location_interior_cloister",
+
 "shot_location_interior_closet",
 "shot_location_interior_command_center",
 "shot_location_interior_commercialkitchen",
@@ -126,18 +127,19 @@ labels = [
 "shot_location_interior_hallway",
 "shot_location_interior_helicopter",
 "shot_location_interior_hospital",
+"shot_location_interior_houseofworship",
 "shot_location_interior_kitchen",
 "shot_location_interior_livingroom",
 "shot_location_interior_lobby",
 "shot_location_interior_mall",
-"shot_location_interior_meditation",
-"shot_location_interior_nave",
+
+
 "shot_location_interior_office",
 "shot_location_interior_office_cubicle",
 "shot_location_interior_office_open",
-"shot_location_interior_prayer_hall",
+
 "shot_location_interior_prison",
-"shot_location_interior_pulpit",
+
 "shot_location_interior_restaurant",
 "shot_location_interior_spacecraft",
 "shot_location_interior_stage",
@@ -152,7 +154,7 @@ labels = [
 "shot_location_interior_store_checkout",
 "shot_location_interior_study",
 "shot_location_interior_subway",
-"shot_location_interior_synagogue",
+
 "shot_location_interior_throneroom",
 "shot_location_interior_train",
 "shot_location_interior_truck",
@@ -184,17 +186,18 @@ exclusive_exterior_buildings = [
 "shot_location_exterior_bridge",
 "shot_location_exterior_bus_stop",
 "shot_location_exterior_castle",
-"shot_location_exterior_cathedral",
-"shot_location_exterior_church",
+
+
 "shot_location_exterior_farm",
 "shot_location_exterior_hospital",
 "shot_location_exterior_house",
+"shot_location_exterior_houseofworship",
 "shot_location_exterior_industrial",
 "shot_location_exterior_library",
 "shot_location_exterior_mall",
 "shot_location_exterior_mansion",
 "shot_location_exterior_monastery",
-"shot_location_exterior_mosque",
+
 "shot_location_exterior_office",
 "shot_location_exterior_palace",
 "shot_location_exterior_parkinglot",
@@ -209,8 +212,8 @@ exclusive_exterior_buildings = [
 "shot_location_exterior_station_subway",
 "shot_location_exterior_station_train",
 "shot_location_exterior_store",
-"shot_location_exterior_synagogue",
-"shot_location_exterior_temple",
+
+
 "shot_location_exterior_theater",
 "shot_location_exterior_tunnel",
 "shot_location_exterior_warehouse"
@@ -261,7 +264,7 @@ exclusive_interior = [
 "shot_location_interior_car",
 "shot_location_interior_cave",
 "shot_location_interior_classroom",
-"shot_location_interior_cloister",
+
 "shot_location_interior_closet",
 "shot_location_interior_command_center",
 "shot_location_interior_commercialkitchen",
@@ -278,18 +281,19 @@ exclusive_interior = [
 "shot_location_interior_hallway",
 "shot_location_interior_helicopter",
 "shot_location_interior_hospital",
+"shot_location_interior_houseofworship",
 "shot_location_interior_kitchen",
 "shot_location_interior_livingroom",
 "shot_location_interior_lobby",
 "shot_location_interior_mall",
-"shot_location_interior_meditation",
-"shot_location_interior_nave",
+
+
 "shot_location_interior_office",
 "shot_location_interior_office_cubicle",
 "shot_location_interior_office_open",
-"shot_location_interior_prayer_hall",
+
 "shot_location_interior_prison",
-"shot_location_interior_pulpit",
+
 "shot_location_interior_restaurant",
 "shot_location_interior_spacecraft",
 "shot_location_interior_stage",
@@ -304,7 +308,7 @@ exclusive_interior = [
 "shot_location_interior_store_checkout",
 "shot_location_interior_study",
 "shot_location_interior_subway",
-"shot_location_interior_synagogue",
+
 "shot_location_interior_throneroom",
 "shot_location_interior_train",
 "shot_location_interior_truck",
@@ -312,41 +316,41 @@ exclusive_interior = [
 ]
 
 #exterior nature shots cant include any of the following:
-exclusive_exterior_nature.extend(exclusive_exterior_buildings)
-exclusive_exterior_nature.extend(exclusive_exterior_township1)
-exclusive_exterior_nature.extend(exclusive_exterior_township2)
-exclusive_exterior_nature.extend(exclusive_exterior_vehicles)
+# exclusive_exterior_nature.extend(exclusive_exterior_buildings)
+# exclusive_exterior_nature.extend(exclusive_exterior_township1)
+# exclusive_exterior_nature.extend(exclusive_exterior_township2)
+# exclusive_exterior_nature.extend(exclusive_exterior_vehicles)
 exclusive_exterior_nature.extend(exclusive_interior)
 exclusive_exterior_nature.append("shot_location_interior")
 
 #exterior building shots cant include any of the following:
-exclusive_exterior_buildings.extend(exclusive_exterior_nature)
-exclusive_exterior_buildings.extend(exclusive_exterior_township1)
-exclusive_exterior_buildings.extend(exclusive_exterior_township2)
-exclusive_exterior_buildings.extend(exclusive_exterior_vehicles)
+# exclusive_exterior_buildings.extend(exclusive_exterior_nature)
+# exclusive_exterior_buildings.extend(exclusive_exterior_township1)
+# exclusive_exterior_buildings.extend(exclusive_exterior_township2)
+# exclusive_exterior_buildings.extend(exclusive_exterior_vehicles)
 exclusive_exterior_buildings.extend(exclusive_interior)
 exclusive_exterior_buildings.append("shot_location_interior")
 
 
-exclusive_exterior_township1.extend(exclusive_exterior_nature)
-exclusive_exterior_township1.extend(exclusive_exterior_buildings)
-exclusive_exterior_township1.extend(exclusive_exterior_township2)
-exclusive_exterior_township1.extend(exclusive_exterior_vehicles)
+# exclusive_exterior_township1.extend(exclusive_exterior_nature)
+# exclusive_exterior_township1.extend(exclusive_exterior_buildings)
+# exclusive_exterior_township1.extend(exclusive_exterior_township2)
+# exclusive_exterior_township1.extend(exclusive_exterior_vehicles)
 exclusive_exterior_township1.extend(exclusive_interior)
 exclusive_exterior_township1.append("shot_location_interior")
 
 
-exclusive_exterior_township2.extend(exclusive_exterior_nature)
-exclusive_exterior_township2.extend(exclusive_exterior_buildings)
-exclusive_exterior_township2.extend(exclusive_exterior_township1)
-exclusive_exterior_township2.extend(exclusive_exterior_vehicles)
+# exclusive_exterior_township2.extend(exclusive_exterior_nature)
+# exclusive_exterior_township2.extend(exclusive_exterior_buildings)
+# exclusive_exterior_township2.extend(exclusive_exterior_township1)
+# exclusive_exterior_township2.extend(exclusive_exterior_vehicles)
 exclusive_exterior_township2.extend(exclusive_interior)
 exclusive_exterior_township2.append("shot_location_interior")
 
-exclusive_exterior_vehicles.extend(exclusive_exterior_nature)
-exclusive_exterior_vehicles.extend(exclusive_exterior_buildings)
-exclusive_exterior_vehicles.extend(exclusive_exterior_township1)
-exclusive_exterior_vehicles.extend(exclusive_exterior_township2)
+# exclusive_exterior_vehicles.extend(exclusive_exterior_nature)
+# exclusive_exterior_vehicles.extend(exclusive_exterior_buildings)
+# exclusive_exterior_vehicles.extend(exclusive_exterior_township1)
+# exclusive_exterior_vehicles.extend(exclusive_exterior_township2)
 exclusive_exterior_vehicles.extend(exclusive_interior)
 exclusive_exterior_vehicles.append("shot_location_interior")
 
@@ -394,6 +398,7 @@ exclusive_concepts = {
 "shot_location_exterior_farm" : exclusive_exterior_buildings,
 "shot_location_exterior_hospital" : exclusive_exterior_buildings,
 "shot_location_exterior_house" : exclusive_exterior_buildings,
+"shot_location_exterior_houseofworship" : exclusive_exterior_buildings,
 "shot_location_exterior_industrial" : exclusive_exterior_buildings,
 "shot_location_exterior_library" : exclusive_exterior_buildings,
 "shot_location_exterior_mall" : exclusive_exterior_buildings,
