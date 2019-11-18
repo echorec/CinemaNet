@@ -23,6 +23,12 @@ def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applica
 	negative = "0"
 	unknown = "-1"
 
+	# make a dictionary whose key is the file concept string and contains paths for every file 
+	concept_files = {}
+
+	for label in labels:
+		concept_files[label] = []
+
 	# all valid files we will label
 	all_files = []
 
@@ -43,10 +49,38 @@ def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applica
 
 				file_concept = os.path.basename ( os.path.dirname( filepath ) )
 
-				if ( filepath.endswith(".jpg") or filepath.endswith(".jpeg") ) and ( filter(lambda x: x in file_concept, labels) or filter(lambda x: x in file_concept, not_applicable_concepts)  ):
-				#if file.endswith(".jpg") and ( (file_concept in labels) or (file_concept in not_applicable_concepts) ) :
+				if ( filepath.endswith(".jpg") or filepath.endswith(".jpeg") ) and ( filter(lambda x: x in file_concept, labels)  ):
 
-					all_files.append(filepath)
+					concept_files[file_concept].append(filepath)
+
+				elif ( filepath.endswith(".jpg") or filepath.endswith(".jpeg") ) and ( filter(lambda x: x in file_concept, not_applicable_concepts)  ):
+
+					concept_files[not_applicable_key].append(filepath)
+
+
+
+		# we should prune our NA concepts to ensure they roughly match the number of other concepts, otherwise our data set is unbalanced
+		if not_applicable_key != None:
+			na_examples = concept_files[not_applicable_key]
+			naExampleCount = len(na_examples)
+
+			maxConceptExamples = 0
+			for key in concept_files:
+				if key != not_applicable_key:
+					conceptCount = len(concept_files[key])
+					maxConceptExamples = max(maxConceptExamples, conceptCount)
+
+			# if we have more NA examples than class concept examples, andomly shuffle our NA examples and clip the array to match the larges class size
+			if naExampleCount > maxConceptExamples:
+				print("NA examples larger than concept size, shuffling then clipping")
+				random.shuffle(na_examples)
+				na_examples = na_examples[:maxConceptExamples]
+				concept_files[not_applicable_key] = na_examples
+
+		# unroll all of our concept_file arrays into a flat array of all files
+		for key in concept_files:
+			all_files.extend( concept_files[key])
+
 
 		# directory traversal is in inode order not alpabetical
 		all_files.sort()
