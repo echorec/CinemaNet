@@ -186,6 +186,8 @@ def html_entry_label(filepath, labels):
 	# item 0 is the image name
 	del labels[0]
 
+	labels.sort()
+
 	filepath = os.path.normpath( os.path.join(dir_path, filepath) )
 	return html_entry.format(filepath, filepath, '<br />'.join(labels) )
 
@@ -312,33 +314,23 @@ with open(args.output, 'wb') as writer:
 				# typically we only want 1 label from our model
 				# but some of our models are multi label - so if we are above threshold confidence include it.
 				# todo: think about this... 
-				max_score = 0.0
-				max_score_key = None
 				for key in list( score.keys() ):
 
 					# if key.endswith('.na'):
 					# 	score.pop(key)
 					# 	continue;
-
-
-					# todo - check if our image path is one of the labels.
-					# if it is set the confidence to 1 for that label and set the key to that label
-					# this ensures our manually pruned shit sticks with every fold
-					if dirname == key.replace('.', '_'):
-						print("FORCING LABEL")
-						max_score = 1.0
-						max_score_key = key
-
+					max_score = 0.0
+					max_score_key = None
 
 					current_score = score[key]
 					if current_score > max_score:
 						max_score = current_score
 						max_score_key = key
 
-				if max_score_key.endswith('.na'):
-					score.pop(max_score_key)
+					# if max_score_key.endswith('.na'):
+					# 	score.pop(max_score_key)
 
-				else: 
+					# else: 
 					if max_score >= confidence:
 						labels.append(max_score_key)
 						# if len(max_score_key) > 32:
