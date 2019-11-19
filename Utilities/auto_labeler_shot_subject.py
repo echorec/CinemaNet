@@ -146,6 +146,31 @@ not_applicable_concepts = [
 "texture"
 ]
 
-auto_label.auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applicable_concepts)
+
+
+def custom_label_closure(file_concept, labels, file_label_value):
+
+	# recurse through our image directory and determine the known positive label (1) known negative labels (0), and unknown labels (-1)
+	positive = "1"
+	negative = "0"
+	unknown = "-1"
+
+
+	if 'shot_subject_person' in file_concept and 'shot_subject_person' in labels:
+
+		# mark all shot subjects negative
+		for label in labels:
+			if 'shot_subject_' in label:
+				index = labels.index(label)
+				file_label_value[index] = negative
+
+		# mark shot_subject_body positive
+		index = labels.index('shot_subject_person')
+		file_label_value[index] = positive
+
+	return file_label_value
+	
+
+auto_label.auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applicable_concepts, custom_label_closure)
 
 

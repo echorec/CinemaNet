@@ -7,7 +7,13 @@ import math
 import time
 import json
 
-def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applicable_concepts):
+# recurse through our image directory and determine the known positive label (1) known negative labels (0), and unknown labels (-1)
+positive = "1"
+negative = "0"
+unknown = "-1"
+
+
+def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applicable_concepts, label_closure=None):
 
 	# ensure our not on disk not applicable key is added to all labels
 	if not_applicable_concepts != None and not_applicable_key != None:
@@ -17,11 +23,6 @@ def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applica
 		not_applicable_concepts = []
 
 	print(labels)
-
-	# recurse through our image directory and determine the known positive label (1) known negative labels (0), and unknown labels (-1)
-	positive = "1"
-	negative = "0"
-	unknown = "-1"
 
 	# make a dictionary whose key is the file concept string and contains paths for every file 
 	concept_files = {}
@@ -145,44 +146,10 @@ def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applica
 						index = labels.index(not_applicable_key)
 						file_label_value[index] = positive
 
-			### TODO : MOVE THIS TO SOME SORT OF LAMBDA FUNCTION THAT CAN BE PASSED THROUGH?
+			# Call our label closure if we have one
+			if label_closure != None:
+				file_label_value =label_closure(file_concept, labels, file_label_value )
 
-			# mark any specific interior or exterior concept as true for the  interior or exterior master label
-			# and ensure all opposites are 0 - (and exterior anything cant be an interior anything, and vice versa) 
-			if 'shot_location_exterior' in file_concept and 'shot_location_exterior' in labels:
-				index = labels.index('shot_location_exterior')
-				file_label_value[index] = positive
-
-				#if we have an exterior mark all interiors and negative
-				for label in labels:
-					if 'shot_location_interior' in label:
-						index = labels.index(label)
-						file_label_value[index] = negative
-
-			if 'shot_location_interior' in file_concept and 'shot_location_interior' in labels:
-				index = labels.index('shot_location_interior')
-				file_label_value[index] = positive
-
-				#if we have an interior mark all exteriors and negative
-				for label in labels:
-					if 'shot_location_exterior' in label:
-						index = labels.index(label)
-						file_label_value[index] = negative
-
-			# if our file concept is shot_subject_person, ensure we mark our shot_subject categories appropriately
-			if 'shot_subject_person' in file_concept and 'shot_subject_person' in labels:
-
-				# mark all shot subjects negative
-				for label in labels:
-					if 'shot_subject_' in label:
-						index = labels.index(label)
-						file_label_value[index] = negative
-
-				# mark shot_subject_body positive
-				index = labels.index('shot_subject_person')
-				file_label_value[index] = positive
-
-			### END TODO : MOVE THIS TO SOME SORT OF LAMBDA FUNCTION THAT CAN BE PASSED THROUGH?
 
 			if file_concept in labels:
 				# our parent folder is our label, clearly we are known
