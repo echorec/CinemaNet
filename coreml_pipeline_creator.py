@@ -10,6 +10,7 @@ parser.add_argument('-m', '--modeldir', type=str, help="folder containing models
 args = parser.parse_args()
 
 classifier_filepaths = []
+regressor_filepaths = []
 feature_extractor_filepath = ""
 
 for subdir, dirs, files in os.walk(args.modeldir):
@@ -19,52 +20,86 @@ for subdir, dirs, files in os.walk(args.modeldir):
 		if "classifier" in filepath:
 			classifier_filepaths.append(filepath)
 
-		if "feature-extractor" in filepath:
+		if "regressor" in filepath:
+			regressor_filepaths.append(filepath)
+
+		if "CinemaNet_color_dominant-feature-extractor.mlmodel" in filepath:
 			feature_extractor_filepath = filepath
 
 
 classifier_filepaths.sort()
+regressor_filepaths.sort()
+
+
+print("Loading Feature Extractor")
 
 #feature extractor as input:
 feature_extractor_model = coremltools.models.MLModel(feature_extractor_filepath)
 
+
+
+print("Updating Feature Extractor")
+
 # our mobilenet or MNASNet feature exactor has not been fine tuned on purpose (so we can use other models dependent on imagenet features)
 feature_exactor_output = "embedding_space"
+color_dominant_output = "color_dominant_output"
 
 # update feature input to be named Image
 feature_spec = feature_extractor_model.get_spec()
+
+print(feature_spec.neuralNetwork.preprocessing)
+print(feature_spec.description.input)
+print(feature_spec.description.output)
+
+
 feature_spec.description.input[0].name = "Image"
 feature_spec.description.input[0].shortDescription = "Input image"
 
-feature_spec.description.output[0].name = feature_exactor_output
-feature_spec.description.output[0].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
+feature_spec.description.output[1].name = feature_exactor_output
+feature_spec.description.output[1].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
+
+feature_spec.description.output[0].name = color_dominant_output
+feature_spec.description.output[0].shortDescription = "Dominant Color prediction"
 
 
-print(feature_spec.neuralNetwork.preprocessing)
+# print(feature_spec.neuralNetwork.outputs)
+
 
 feature_spec.neuralNetwork.preprocessing[0].featureName = "Image"
 
 for i in range(len(feature_spec.neuralNetwork.layers)):
 
     # feature exactor input change
-    if feature_spec.neuralNetwork.layers[i].input[0] == "mobilenetv2_1.00_224_input__0":
+    if feature_spec.neuralNetwork.layers[i].input[0] == "input_1__0":
         feature_spec.neuralNetwork.layers[i].input[0] = "Image"
 
-    if feature_spec.neuralNetwork.layers[i].output[0] == "mobilenetv2_1.00_224_input__0":
+    if feature_spec.neuralNetwork.layers[i].output[0] == "input_1__0":
         feature_spec.neuralNetwork.layers[i].output[0] = "Image"
 
-    # feature exactor output change
+	    # feature exactor output change
     if feature_spec.neuralNetwork.layers[i].input[0] == "global_average_pooling2d__Mean__0":
         feature_spec.neuralNetwork.layers[i].input[0] = feature_exactor_output
 
     if feature_spec.neuralNetwork.layers[i].output[0] == "global_average_pooling2d__Mean__0":
         feature_spec.neuralNetwork.layers[i].output[0] = feature_exactor_output
 
+    if feature_spec.neuralNetwork.layers[i].input[0] == "color_dominant__BiasAdd__0":
+        feature_spec.neuralNetwork.layers[i].input[0] = color_dominant_output
+
+    if feature_spec.neuralNetwork.layers[i].output[0] == "color_dominant__BiasAdd__0":
+        feature_spec.neuralNetwork.layers[i].output[0] = color_dominant_output
+
 
 # feature_spec.neuralNetworkClassifier.preprocessing[0].featureName = "Image"        
 
+print(feature_spec.neuralNetwork.preprocessing)
+print(feature_spec.description.input)
+print(feature_spec.description.output)
+
+
 feature_extractor_model = coremltools.models.MLModel(feature_spec)
 
+print("Finished Processing Feature Extractor")
 
 # color_classifier = coremltools.models.MLModel("/Users/vade/Documents/Repositories/Synopsis/CinemaNet/Models/Collab-Multi/MobileNetV2/Cinemanet-2019-09-26_00_30_42-Color_classifier.mlmodel")
 # location_classifier = coremltools.models.MLModel("/Users/vade/Documents/Repositories/Synopsis/CinemaNet/Models/Collab-Multi/MobileNetV2/Cinemanet-2019-09-26_01_16_51-Location_classifier.mlmodel")
@@ -189,19 +224,84 @@ def uniqueify_model_outputs(model, input_name, output_name):
 
 	return coremltools.models.MLModel(spec)
 
+def uniqueify_model_outputs_regressor(model, input_name, output_name):
+	spec = model.get_spec()
+	
+	# Update Output names to be nicer:
+	# spec.description.input[0].name = input_name
+
+	spec.description.input[0].name = feature_exactor_output
+	spec.description.input[0].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
+
+
+	#probabilities
+	spec.description.output[0].name = output_name
+	spec.description.output[0].shortDescription = output_name
+
+	# spec.description.output[1].name = output_name+"_classLabel"
+	# spec.description.output[1].shortDescription = output_name+"_classLabel"
+
+	# spec.description.predictedProbabilitiesName = output_name
+	# spec.description.predictedFeatureName = output_name+"_classLabel"
+
+	for i in range(len(spec.neuralNetwork.layers)):
+
+		# if spec.neuralNetworkClassifier.layers[i].input[0] == "global_average_pooling2d__Mean__0":
+		# 	spec.neuralNetworkClassifier.layers[i].input[0] = input_name
+
+		for j in range(len(spec.neuralNetwork.layers[i].input)):
+		    # feature exactor output change
+		    if spec.neuralNetwork.layers[i].input[j] == "global_average_pooling2d__Mean__0":
+		        spec.neuralNetwork.layers[i].input[j] = feature_exactor_output
+
+			# if spec.neuralNetworkClassifier.layers[i].input[j] == "cinemanet_output__Sigmoid__0":
+			# 	print("renaming output to " + output_name)
+			# 	spec.neuralNetworkClassifier.layers[i].input[j] = output_name 
+
+
+		for j in range(len(spec.neuralNetwork.layers[i].output)):
+		    # feature exactor output change
+		    # if spec.neuralNetworkClassifier.layers[i].output[j] == "global_average_pooling2d__Mean__0":
+		    #     spec.neuralNetworkClassifier.layers[i].output[j] = feature_exactor_output
+
+
+			if spec.neuralNetwork.layers[i].output[j] == "cinemanet_output__Sigmoid__0":
+				print("renaming output to " + output_name)
+				spec.neuralNetwork.layers[i].output[j] = output_name 
+
+		# elif "final_result__0" in spec.neuralNetworkClassifier.layers[i].output[0]:  
+		# 	print("appending output to " + spec.neuralNetworkClassifier.layers[i].output[0].replace("final_result__0", output_name))
+		#     spec.neuralNetworkClassifier.layers[i].output[0] = spec.neuralNetworkClassifier.layers[i].output[0].replace("final_result__0", output_name)
+
+	# update our preprocessor input too
+	# spec.neuralNetworkClassifier.labelProbabilityLayerName = output_name
+
+
+	return coremltools.models.MLModel(spec)
 
 # Load classifiers
 classifiers = []
+regressors = []
 
-output_features = [ (feature_exactor_output, datatypes.Array(1280)), ]
+output_features = [ 
+					( feature_exactor_output, datatypes.Array(1280) ),
+					( color_dominant_output, datatypes.Array(30) ) ,
+					]
+
+print feature_extractor_filepath
+print classifier_filepaths
+print regressor_filepaths
+
 
 for classifier_path in classifier_filepaths:
+
+	print classifier_path
 
 	classifier_name = os.path.basename(classifier_path)
 	classifier_name = classifier_name.replace("CinemaNet_", "")
 	classifier_name = classifier_name.replace("-classifier.mlmodel", "")
 
-	print classifier_name
+	print "classifier " + classifier_name
 
 	classifier = coremltools.models.MLModel(classifier_path)
 	classifier = uniqueify_model_outputs(classifier, classifier_name + "_input", classifier_name + "_output")
@@ -211,6 +311,24 @@ for classifier_path in classifier_filepaths:
 	#build our output features array
 	output_features.append( (classifier_name + "_output", datatypes.Dictionary(key_type=String) ) )
 
+
+for regressor_path in regressor_filepaths:
+
+	print regressor_path
+
+	regressor_name = os.path.basename(regressor_path)
+	regressor_name = regressor_name.replace("CinemaNet_", "")
+	regressor_name = regressor_name.replace("-regressor.mlmodel", "")
+
+	print "regressor " + regressor_name
+
+	regressor = coremltools.models.MLModel(regressor_path)
+	regressor = uniqueify_model_outputs_regressor(regressor, regressor_name + "_input", regressor_name + "_output")
+
+	regressors.append( regressor )
+
+	#build our output features array
+	output_features.append( (regressor_name + "_output", datatypes.Array(30) ) )
 
 
 # color_classifier = uniqueify_model_outputs(color_classifier, "color_classifier_input", "color_classifier_output")
@@ -233,6 +351,9 @@ pipeline.add_model(feature_extractor_model)
 
 for classifier in classifiers:
 	pipeline.add_model(classifier)
+
+for regressor in regressors:
+	pipeline.add_model(regressor)
 
 # pipeline.add_model(feature_extractor_model)
 # pipeline.add_model(color_classifier)
