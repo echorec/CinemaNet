@@ -1,0 +1,1 @@
+shot_angle_aerial, shot_angle_eyelevel, shot_angle_high, shot_angle_low, shot_angle_na

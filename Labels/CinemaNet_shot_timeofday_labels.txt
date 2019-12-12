@@ -1,0 +1,1 @@
+shot_timeofday_day, shot_timeofday_night, shot_timeofday_twilight, shot_timeofday_na

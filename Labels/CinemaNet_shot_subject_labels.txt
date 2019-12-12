@@ -1,0 +1,1 @@
+shot_subject_animal, shot_subject_location, shot_subject_object, shot_subject_person, shot_subject_person_body, shot_subject_person_face, shot_subject_person_feet, shot_subject_person_hands, shot_subject_text, shot_subject_na
