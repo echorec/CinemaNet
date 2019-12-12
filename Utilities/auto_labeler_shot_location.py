@@ -26,9 +26,9 @@ labels = [
 "shot_location_exterior",
 "shot_location_interior",
 
-"shot_location_nature",
-"shot_location_structure",
-"shot_location_settlement",
+# "shot_location_nature",
+# "shot_location_structure",
+# "shot_location_settlement",
 
 # actual file labels
 "shot_location_exterior_nature_beach",
@@ -351,8 +351,6 @@ def custom_label_closure(file_concept, labels, file_label_value):
 	negative = "0"
 	unknown = "-1"
 
-
-	print("custom_label_closure")
 	# mark any specific interior or exterior concept as true for the  interior or exterior master label
 	# and ensure all opposites are 0 - (and exterior anything cant be an interior anything, and vice versa) 
 	if 'exterior' in file_concept:
@@ -375,17 +373,17 @@ def custom_label_closure(file_concept, labels, file_label_value):
 				index = labels.index(label)
 				file_label_value[index] = negative
 
-	if 'nature' in file_concept:
-		index = labels.index('shot_location_nature')
-		file_label_value[index] = positive
+	# if 'nature' in file_concept:
+	# 	index = labels.index('shot_location_nature')
+	# 	file_label_value[index] = positive
 
-	if 'structure' in file_concept:
-		index = labels.index('shot_location_structure')
-		file_label_value[index] = positive
+	# if 'structure' in file_concept:
+	# 	index = labels.index('shot_location_structure')
+	# 	file_label_value[index] = positive
 				
-	if 'settlement' in file_concept:
-		index = labels.index('shot_location_settlement')
-		file_label_value[index] = positive
+	# if 'settlement' in file_concept:
+	# 	index = labels.index('shot_location_settlement')
+	# 	file_label_value[index] = positive
 
 	return file_label_value
 										
