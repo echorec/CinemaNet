@@ -23,7 +23,7 @@ for subdir, dirs, files in os.walk(args.modeldir):
 		if "regressor" in filepath:
 			regressor_filepaths.append(filepath)
 
-		if "CinemaNet_color_dominant-feature-extractor.mlmodel" in filepath:
+		if "-feature-extractor.mlmodel" in filepath:
 			feature_extractor_filepath = filepath
 
 
@@ -42,7 +42,7 @@ print("Updating Feature Extractor")
 
 # our mobilenet or MNASNet feature exactor has not been fine tuned on purpose (so we can use other models dependent on imagenet features)
 feature_exactor_output = "embedding_space"
-color_dominant_output = "color_dominant_output"
+# color_dominant_output = "color_dominant_output"
 
 # update feature input to be named Image
 feature_spec = feature_extractor_model.get_spec()
@@ -55,11 +55,11 @@ print(feature_spec.description.output)
 feature_spec.description.input[0].name = "Image"
 feature_spec.description.input[0].shortDescription = "Input image"
 
-feature_spec.description.output[1].name = feature_exactor_output
-feature_spec.description.output[1].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
+feature_spec.description.output[0].name = feature_exactor_output
+feature_spec.description.output[0].shortDescription = "Mobilenet V2 Embedding Space trained on ImageNet"
 
-feature_spec.description.output[0].name = color_dominant_output
-feature_spec.description.output[0].shortDescription = "Dominant Color prediction"
+# feature_spec.description.output[0].name = color_dominant_output
+# feature_spec.description.output[0].shortDescription = "Dominant Color prediction"
 
 
 # print(feature_spec.neuralNetwork.outputs)
@@ -83,11 +83,11 @@ for i in range(len(feature_spec.neuralNetwork.layers)):
     if feature_spec.neuralNetwork.layers[i].output[0] == "global_average_pooling2d__Mean__0":
         feature_spec.neuralNetwork.layers[i].output[0] = feature_exactor_output
 
-    if feature_spec.neuralNetwork.layers[i].input[0] == "color_dominant__BiasAdd__0":
-        feature_spec.neuralNetwork.layers[i].input[0] = color_dominant_output
+    # if feature_spec.neuralNetwork.layers[i].input[0] == "color_dominant__BiasAdd__0":
+    #     feature_spec.neuralNetwork.layers[i].input[0] = color_dominant_output
 
-    if feature_spec.neuralNetwork.layers[i].output[0] == "color_dominant__BiasAdd__0":
-        feature_spec.neuralNetwork.layers[i].output[0] = color_dominant_output
+    # if feature_spec.neuralNetwork.layers[i].output[0] == "color_dominant__BiasAdd__0":
+    #     feature_spec.neuralNetwork.layers[i].output[0] = color_dominant_output
 
 
 # feature_spec.neuralNetworkClassifier.preprocessing[0].featureName = "Image"        
@@ -285,7 +285,7 @@ regressors = []
 
 output_features = [ 
 					( feature_exactor_output, datatypes.Array(1280) ),
-					( color_dominant_output, datatypes.Array(30) ) ,
+					# ( color_dominant_output, datatypes.Array(30) ) ,
 					]
 
 print feature_extractor_filepath
