@@ -24,7 +24,7 @@ args = parser.parse_args()
 # list of exclusive concepts groups:
 exclusive_concepts = [
 "shot_framing_closeup",
-"shot_framing_extemelong",
+"shot_framing_extremelong",
 "shot_framing_extremecloseup",
 "shot_framing_long",
 "shot_framing_medium",
