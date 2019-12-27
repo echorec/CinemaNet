@@ -70,10 +70,10 @@ feature_spec.neuralNetwork.preprocessing[0].featureName = "Image"
 for i in range(len(feature_spec.neuralNetwork.layers)):
 
     # feature exactor input change
-    if feature_spec.neuralNetwork.layers[i].input[0] == "input_1__0":
+    if feature_spec.neuralNetwork.layers[i].input[0] == "mobilenetv2_1.00_224_input__0":
         feature_spec.neuralNetwork.layers[i].input[0] = "Image"
 
-    if feature_spec.neuralNetwork.layers[i].output[0] == "input_1__0":
+    if feature_spec.neuralNetwork.layers[i].output[0] == "mobilenetv2_1.00_224_input__0":
         feature_spec.neuralNetwork.layers[i].output[0] = "Image"
 
 	    # feature exactor output change
