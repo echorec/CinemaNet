@@ -15,6 +15,12 @@ unknown = "-1"
 
 def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applicable_concepts, label_closure=None):
 
+	# put out initial labels into alpha-betical order prior to doing shit.
+	# n/a gets appended at the end
+	labels.sort()
+	exclusive_concepts.sort()
+	not_applicable_concepts.sort()
+
 	# ensure our not on disk not applicable key is added to all labels
 	if not_applicable_concepts != None and not_applicable_key != None:
 		labels.append(not_applicable_key)
