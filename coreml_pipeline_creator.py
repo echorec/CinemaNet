@@ -3,6 +3,7 @@ from coremltools.models import datatypes
 from coremltools.models.datatypes import Dictionary, Int64, String
 import argparse
 import os
+import datetime
 
 parser = argparse.ArgumentParser(description='Use a folder of ML model classifiers to label a local unlabeled data set')
 parser.add_argument('-m', '--modeldir', type=str, help="folder containing models to be turned into a pipeline", default="./Models/Collab-Multi/2019_10_01_03_27_32", required=False)
@@ -384,9 +385,14 @@ for regressor in regressors:
 # pipeline_spec.description.predictedProbabilitiesName = #knn_spec.description.predictedProbabilitiesName,
 
 # Provide metadata,
-pipeline.spec.description.metadata.author = 'Anton Marini / Synopsis Project'
+
+last_model_folder = os.path.basename( os.path.normpath(args.modeldir) )
+print (last_model_folder)
+model_creation_date  = datetime.datetime.strptime(last_model_folder, '%Y_%m_%d_%H_%M_%S')
+
+pipeline.spec.description.metadata.author = 'Anton Marini / Synopsis '
 pipeline.spec.description.metadata.license = 'BSD'
-pipeline.spec.description.metadata.shortDescription = "CinemaNet"
+pipeline.spec.description.metadata.shortDescription = "CinemaNet from the Synopsis project.\n\nThis model was created: " +  model_creation_date.strftime("%Y/%m/%d at %H:%M:%S") + "\n\nVisit https://synopsis.video/CinemaNet for more information"
 
 convert_multiarray_output_to_image(pipeline.spec, "Image", is_bgr=False)
 
