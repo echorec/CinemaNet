@@ -1,1 +1,1 @@
-shot_focus_shallow, shot_focus_out, shot_focus_deep, shot_focus_na
+shot_focus_deep, shot_focus_out, shot_focus_shallow, shot_focus_na
