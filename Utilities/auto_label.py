@@ -19,8 +19,8 @@ def auto_label(args, labels, exclusive_concepts, not_applicable_key, not_applica
 	# n/a gets appended at the end
 	labels.sort()
 
-	if exclusive_concepts != None:
-		exclusive_concepts.sort()
+	# if exclusive_concepts != None:
+	# 	exclusive_concepts.sort()
 	
 	if not_applicable_concepts != None:
 		not_applicable_concepts.sort()

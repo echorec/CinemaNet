@@ -1,1 +1,1 @@
-shot_lighting_hard, shot_lighting_soft, shot_lighting_neutral, shot_lighting_key_high, shot_lighting_key_low, shot_lighting_silhouette, shot_lighting_na
+shot_lighting_hard, shot_lighting_key_high, shot_lighting_key_low, shot_lighting_neutral, shot_lighting_silhouette, shot_lighting_soft, shot_lighting_na
