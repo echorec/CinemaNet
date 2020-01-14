@@ -1,1 +1,0 @@
-shot_type_master, shot_type_overtheshoulder, shot_type_portrait, shot_type_twoshot, shot_type_na

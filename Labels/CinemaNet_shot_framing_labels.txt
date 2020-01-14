@@ -1,1 +1,0 @@
-shot_framing_closeup, shot_framing_extremecloseup, shot_framing_extremelong, shot_framing_long, shot_framing_medium, shot_framing_na

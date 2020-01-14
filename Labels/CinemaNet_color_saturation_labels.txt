@@ -1,1 +1,0 @@
-color_saturation_desaturated, color_saturation_neutral, color_saturation_pastel, color_saturation_saturated
