@@ -1,16 +1,17 @@
 from google_images_download import google_images_download   #importing the library
 from multiprocessing import Pool
 import os
+import argparse
 
 # please see https://github.com/Synopsis/CinemaNet/blob/master/Labels.md for specifics.
 
-# the following categories and concepts are meant to capture both general image understanding 
+# the following categories and concepts are meant to capture both general image understanding
 # as well as terminology useful to photographers, cinematographers, visual artists and those working with visual media.
 # this is the beginning of a quasi 'knowledge graph', using a reverse domain labelling system
-# allowing us to add labels without polluting existing label name spaces 
+# allowing us to add labels without polluting existing label name spaces
 
-# due to limitations of label length in Googles Auto ML, we have removed the prefix 
-#'synopsis.image.' from every cateogry and concept in this script. 
+# due to limitations of label length in Googles Auto ML, we have removed the prefix
+#'synopsis.image.' from every cateogry and concept in this script.
 
 # We add those back during clean up of our CoreML models
 
@@ -19,13 +20,35 @@ import os
 
 # This script does *not* prune each cateogry/concept - it just helps us get a lot of images which may or may not be relevant to the concept
 
-# This script does *not* fetch the 'None of the above' images. 
+# This script does *not* fetch the 'None of the above' images.
 
-# top level dictionary key is top level category directory name 
+# top level dictionary key is top level category directory name
 # value is a dictionary of the concept name (sub folder) and human search terms for google image search
 
+parser = argparse.ArgumentParser(
+    description='''
+    ============================================================================
+        				Download the CinemaNet Dataset
+    ============================================================================
+
+    Usage
+    --------
+
+	python synopsis_categories_and_concepts_image_downloader.py
+
+	## If you need to specify where `chromedriver` is installed
+    python synopsis_categories_and_concepts_image_downloader.py \
+		--chromedriver_path /usr/loca/bin/chromedriver
+
+    ''', formatter_class=argparse.RawTextHelpFormatter)
+
+parser.add_argument('--chromedriver_path', type=str, required=False,
+                    default="/usr/local/bin/chromedriver",
+                    help='chromedriver location')
+args = parser.parse_args()
+
 categories_and_concepts = {
-	
+
 	# What is the overall color saturation of the image?
 	"color_saturation" : [
 	{ "color_saturation_desaturated" : ["Desaturated photography", "Desaturated colors photography", "Desaturated tones photography"]},
@@ -114,11 +137,11 @@ categories_and_concepts = {
 	{ "composition_texture_smooth" : ["smooth texture", "smooth photography"]},
 	{ "composition_texture_rough" : ["rough texture", "rough texture photography"]},
 
-	# train cracked vs patterned (continuous?)	
+	# train cracked vs patterned (continuous?)
 	{ "composition_texture_cracked" : ["rough texture", "rough photography"]},
 	{ "composition_texture_patterned" : ["pattern texture", "pattern photography"]},
-	],	
- 	
+	],
+
  	#is the camera is angled up or down?
 	"shot_angle" : [
 	# contains NA when training
@@ -127,7 +150,7 @@ categories_and_concepts = {
 	{ "shot_angle_eyelevel" : ["eye level shot", "eye level shot camera angle"]},
 	{ "shot_angle_low" : ["low angle shot", "low angle shot cinematography"]},
 	],
-	
+
 	# is the camera rotated about its 'z axis'? (rotated about the lens)
 	"shot_level" : [
 	# contains NA when training
@@ -135,7 +158,7 @@ categories_and_concepts = {
 	{ "shot_level_tilted" : ["tilted shot", "dutch angle shot", "oblique angle shot"]},
 	],
 
-	# 
+	#
 	"shot_type" : [
 	# contains NA when training
 	{ "shot_type_portrait" : ["portrait shot", "two shot cinematography"]},
@@ -162,7 +185,7 @@ categories_and_concepts = {
 	{ "shot_focus_out" : ["out of focus", "out of focus shot"]},
 	],
 
-	# describe the lighting environment 
+	# describe the lighting environment
 	"shot_lighting" : [
 	# contains NA when training
 	{ "shot_lighting_soft" : ["soft lighting cinematography", "soft lighting"]},
@@ -183,7 +206,7 @@ categories_and_concepts = {
 	],
 
 	# I cant figure out a better way to get diverse results :( - this feels gross - help me.
-	# maybe https://www.ibm.com/blogs/research/2019/01/diversity-in-faces/ ? 
+	# maybe https://www.ibm.com/blogs/research/2019/01/diversity-in-faces/ ?
 	# faces, body, bodies, limb, limbs might be too specific with the plurals? Maybe make one category?
 	"shot_subject_person" : [
 	{ "shot_subject_person_face" : ["male face", "female face", "african american face", "asian face", "old face", "diverse faces photography -collage"]},
@@ -276,9 +299,9 @@ categories_and_concepts = {
 	{"shot_location_exterior_bus_stop" : ["Bus stop"]},
 	{"shot_location_exterior_station_subway" : ["Subway entrance -sandwich -food",]},
 	{"shot_location_exterior_store" : ["Store exterior"]},
-	{"shot_location_exterior_hospital" : ["Hospital building"]},	
-	{"shot_location_exterior_school" : ["School building"]},	
-	{"shot_location_exterior_library" : ["Library building"]},	
+	{"shot_location_exterior_hospital" : ["Hospital building"]},
+	{"shot_location_exterior_school" : ["School building"]},
+	{"shot_location_exterior_library" : ["Library building"]},
 	{"shot_location_exterior_parkinglot" : ["Parking Lot"]},
 	{"shot_location_exterior_bridge" : ["Bridge"]},
 	{"shot_location_exterior_tunnel" : ["Tunnel entrance"]},
@@ -287,7 +310,7 @@ categories_and_concepts = {
 	{"shot_location_exterior_station_fire" : ["police station exterior", "state trooper building", "police headquarters"]},
 	{"shot_location_exterior_prison": ["prison exterior", "prison yard prisoners", "prison yard guard", "prison fenc"]},
 	{"shot_location_exterior_courthouse": ["courthouse outside", "courthouse protest", "courthouse steps talking", "courthouse steps press conference"]},
-	
+
 	# Specific vehicle (exterior) categories if we can identify them
 	{"shot_location_exterior_car" : ["Car"]},
 	{"shot_location_exterior_bus" : ["Bus"]},
@@ -350,7 +373,7 @@ categories_and_concepts = {
 	{"shot_location_interior_prayer_hall" : ["prayer hall", "call to prayer hall"]},
 	{"shot_location_interior_pulpit" : ["church interior pulpit", "church interior pulpit sermon"]},
 	{"shot_location_interior_synagogue" : ["synagogue interior","synagogue praying"]},
-	{"shot_location_interior_meditation" : ["temple meditation hall", "temple meditation hall prayers"]},	
+	{"shot_location_interior_meditation" : ["temple meditation hall", "temple meditation hall prayers"]},
 	{"shot_location_interior_crypt" : ["crypt"]},
 	{"shot_location_interior_cloister" : ["cloister"]},
 	{"shot_location_interior_prison" : ["jail cell people", "prison interior"]},
@@ -387,7 +410,8 @@ allArguments = []
 try:
     os.stat("Data/download/")
 except:
-    os.mkdir("Data/download/")   
+    os.mkdir("Data/")
+    os.mkdir("Data/download/")
 
 for category_key in categories_and_concepts:
 	# concepts is an array of dictionaries
@@ -395,23 +419,23 @@ for category_key in categories_and_concepts:
 	try:
 	    os.stat("Data/download/" + category_key)
 	except:
-	    os.mkdir("Data/download/" + category_key)   
+	    os.mkdir("Data/download/" + category_key)
 
-	print "Category: " + category_key
-	category_concepts = categories_and_concepts[category_key] 
+	print ("Category: " + category_key)
+	category_concepts = categories_and_concepts[category_key]
 	for concept in category_concepts:
 		for concept_key in concept:
-			print "Concept: " + concept_key 
+			print ("Concept: " + concept_key)
 			searchterms = ", ".join(concept[concept_key])
-			print "Search Terms: " + searchterms
+			print ("Search Terms: " + searchterms)
 
 			try:
 			    os.stat("Data/download/" + category_key + "/" + concept_key)
 			except:
-			    os.mkdir("Data/download/" + category_key + "/" + concept_key)   
+			    os.mkdir("Data/download/" + category_key + "/" + concept_key)
 
 			response = google_images_download.googleimagesdownload()   #class instantiation
-			arguments = { "chromedriver" : "/Users/vade/Documents/Repositories/Synopsis/CinemaNet/chromedriver", "keywords" : searchterms, "limit" : 300, "print_urls" : False, "output_directory" : "Data/download/"+category_key, "image_directory" : concept_key,  "size" : "medium", "format" : "jpg" , "no_numbering" : True }
+			arguments = { "chromedriver" : args.chromedriver_path, "keywords" : searchterms, "limit" : 300, "print_urls" : False, "output_directory" : "Data/download/"+category_key, "image_directory" : concept_key,  "size" : "medium", "format" : "jpg" , "no_numbering" : True }
 			#arguments = { "keywords" : searchterms, "limit" : 100, "print_urls" : False, "output_directory" : "Data/download/"+category_key, "image_directory" : concept_key,  "size" : "medium", "save_source" : concept_key + "sources", "format" : "jpg" }
 			allArguments.append(arguments)
 
