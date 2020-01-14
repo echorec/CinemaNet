@@ -1,6 +1,7 @@
 from google_images_download import google_images_download   #importing the library
 from multiprocessing import Pool
 import os
+import argparse
 
 # please see https://github.com/Synopsis/CinemaNet/blob/master/Labels.md for specifics.
 
@@ -23,6 +24,28 @@ import os
 
 # top level dictionary key is top level category directory name
 # value is a dictionary of the concept name (sub folder) and human search terms for google image search
+
+parser = argparse.ArgumentParser(
+    description='''
+    ============================================================================
+        				Download the CinemaNet Dataset
+    ============================================================================
+
+    Usage
+    --------
+
+	python synopsis_categories_and_concepts_image_downloader.py
+
+	## If you need to specify where `chromedriver` is installed
+    python synopsis_categories_and_concepts_image_downloader.py \
+		--chromedriver_path /usr/loca/bin/chromedriver
+
+    ''', formatter_class=argparse.RawTextHelpFormatter)
+
+parser.add_argument('--chromedriver_path', type=str, required=False,
+                    default="/usr/local/bin/chromedriver",
+                    help='chromedriver location')
+args = parser.parse_args()
 
 categories_and_concepts = {
 
@@ -412,7 +435,7 @@ for category_key in categories_and_concepts:
 			    os.mkdir("Data/download/" + category_key + "/" + concept_key)
 
 			response = google_images_download.googleimagesdownload()   #class instantiation
-			arguments = { "chromedriver" : "/Users/vade/Documents/Repositories/Synopsis/CinemaNet/chromedriver", "keywords" : searchterms, "limit" : 300, "print_urls" : False, "output_directory" : "Data/download/"+category_key, "image_directory" : concept_key,  "size" : "medium", "format" : "jpg" , "no_numbering" : True }
+			arguments = { "chromedriver" : args.chromedriver_path, "keywords" : searchterms, "limit" : 300, "print_urls" : False, "output_directory" : "Data/download/"+category_key, "image_directory" : concept_key,  "size" : "medium", "format" : "jpg" , "no_numbering" : True }
 			#arguments = { "keywords" : searchterms, "limit" : 100, "print_urls" : False, "output_directory" : "Data/download/"+category_key, "image_directory" : concept_key,  "size" : "medium", "save_source" : concept_key + "sources", "format" : "jpg" }
 			allArguments.append(arguments)
 
