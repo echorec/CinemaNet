@@ -3,7 +3,7 @@
 __all__ = ['create_head', 'create_cnn_model', 'cnn_learner']
 
 # Cell
-from fastai.vision.learner import cnn_config
+from fastai.vision.learner import cnn_config, num_features_model, listify, bn_drop_lin
 from fastai.vision import *
 
 # Cell
