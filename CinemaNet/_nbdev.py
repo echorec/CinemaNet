@@ -2,11 +2,20 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"create_head": "fastai-custom_head.ipynb",
-         "create_cnn_model": "fastai-custom_head.ipynb",
-         "cnn_learner": "fastai-custom_head.ipynb"}
+index = {"create_head": "fastai_custom_head.ipynb",
+         "create_cnn_model": "fastai_custom_head.ipynb",
+         "cnn_learner": "fastai_custom_head.ipynb",
+         "xtra_tfms": "mobilenet_v2_basic.ipynb",
+         "get_tfms": "mobilenet_v2_basic.ipynb",
+         "to_film_ar": "mobilenet_v2_basic.ipynb",
+         "get_data": "mobilenet_v2_basic.ipynb",
+         "get_callbacks": "mobilenet_v2_basic.ipynb",
+         "cb_estop": "mobilenet_v2_basic.ipynb",
+         "metrics": "mobilenet_v2_basic.ipynb",
+         "cb_wandb": "mobilenet_v2_basic.ipynb"}
 
-modules = ["custom_head.py"]
+modules = ["custom_head.py",
+           "train_utils.py"]
 
 doc_url = "https://Synopsis.github.io/CinemaNet/"
 
