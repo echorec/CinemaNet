@@ -3,6 +3,14 @@
 __all__ = ['xtra_tfms', 'get_tfms', 'to_film_ar', 'get_data', 'get_callbacks', 'cb_estop', 'metrics', 'cb_wandb']
 
 # Cell
+from fastai.vision import *
+from fastai.callbacks import EarlyStoppingCallback, SaveModelCallback
+from fastai.metrics import accuracy, Precision, Recall
+from .custom_head import *
+import wandb
+from wandb.fastai import WandbCallback
+
+# Cell
 to_film_ar = lambda h: (h, int(h * 16/9)) # h = height
 
 def xtra_tfms(base_size):
