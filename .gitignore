@@ -1,3 +1,4 @@
+CinemaNet/__pycache__/*.pyc
 nbs/confusion-mat*
 nbs/wandb
 filmgrab
