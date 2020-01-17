@@ -47,6 +47,7 @@ class WandbCallback(TrackerCallback):
                  validation_data=None,
                  predictions=36,
                  confusion_matrix=True,
+                 conf_dpi=150,
                  seed=12345):
 
 
@@ -63,6 +64,8 @@ class WandbCallback(TrackerCallback):
             super().__init__(learn, monitor=monitor, mode=mode)
         self.save_model = save_model
         self.model_path = Path(wandb.run.dir) / 'bestmodel.pth'
+        self.confusion_matrix = confusion_matrix
+        self.conf_dpi = conf_dpi
 
         self.log = log
         self.input_type = input_type
@@ -185,7 +188,7 @@ class WandbCallback(TrackerCallback):
 
         if self.confusion_matrix:
             interpret = ClassificationInterpretation.from_learner(self.learn)
-            conf_plt = interpet.plot_confusion_matrix(dpi=100, return_fig=True)
-            conf_plt.savefig('confusion-matrix_tmp.png', format='png')
-            conf_img = Image.open('confusion-matrix_tmp.png')
-            wandb.log({"confusion-matrix": wandb.Image(conf_img)})
+            conf_plt = interpret.plot_confusion_matrix(dpi=self.conf_dpi, return_fig=True, title='Confusion Matrix')
+            self.interpret = interpret
+
+            wandb.log({"Confusion Matrix": wandb.Image(conf_plt)})
