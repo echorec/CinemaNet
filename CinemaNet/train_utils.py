@@ -40,9 +40,9 @@ def get_tfms(base_size): return get_transforms(do_flip = True,
                                                xtra_tfms = xtra_tfms(base_size))
 
 # Cell
-def get_data(path, base_size, batch_size, transforms=get_transforms(max_zoom=1.), **kwargs):
+def get_data(path, img_size, batch_size, transforms=get_transforms(max_zoom=1.), **kwargs):
     return ImageDataBunch.from_folder(path, 'train', 'valid',
-                                      size    = to_film_ar(base_size),
+                                      size    = img_size,
                                       ds_tfms = transforms, bs=batch_size,
                                       resize_method = ResizeMethod.SQUISH,
                                       **kwargs
