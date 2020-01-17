@@ -1,6 +1,9 @@
 ## SOURCE --> https://github.com/oguiza/fastai_extensions/blob/master/fastai_extensions/exp/nb_MixMatch.py
 ## https://github.com/oguiza/fastai_extensions/blob/master/04a_MixMatch_extended.ipynb
 ## This script was written by Ignacio Oguiza, who in turn took heavy inspiration from Noah Rubinstein
+## One tiny modification has been made
+## * added `size` argument to specify unlabelled data image size in `def mixmatch(...)`
+
 
 from fastai.vision import *
 import warnings
@@ -179,7 +182,7 @@ class MixMatchCallback(LearnerCallback):
         drop_cb_fn(self.learn, 'MixMatchCallback')
 
 
-def mixmatch(learn: Learner, ulist: ItemList, num_workers:int=None,
+def mixmatch(learn: Learner, ulist: ItemList, num_workers:int=None, size:Union[int,tuple]=64,
              K: int = 2, T: float = .5, α: float = .75, λ: float = 100) -> Learner:
 
     labeled_data = learn.data
@@ -193,7 +196,7 @@ def mixmatch(learn: Learner, ulist: ItemList, num_workers:int=None,
     train_ul = ulist.label_empty().train           # Train unlabeled Labelist
     valid_ll = learn.data.label_list.valid         # Valid labeled Labelist
     udata = (LabelLists('.', train_ul, valid_ll)
-             .transform(tfms)
+             .transform(tfms, size=size)
              .databunch(bs=min(bs, len(train_ul)),val_bs=min(bs * 2, len(valid_ll)),
                         num_workers=num_workers,dl_tfms=learn.data.dl_tfms,device=device,
                         collate_fn=MultiCollate)
