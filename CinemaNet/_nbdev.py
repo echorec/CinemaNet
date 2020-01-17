@@ -12,10 +12,12 @@ index = {"create_head": "fastai_custom_head.ipynb",
          "get_callbacks": "mobilenet_v2_basic.ipynb",
          "cb_estop": "mobilenet_v2_basic.ipynb",
          "metrics": "mobilenet_v2_basic.ipynb",
-         "cb_wandb": "mobilenet_v2_basic.ipynb"}
+         "cb_wandb": "mobilenet_v2_basic.ipynb",
+         "WandbCallback": "wandb_callback.ipynb"}
 
 modules = ["custom_head.py",
-           "train_utils.py"]
+           "train_utils.py",
+           "wandb.py"]
 
 doc_url = "https://Synopsis.github.io/CinemaNet/"
 
