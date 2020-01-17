@@ -6,9 +6,11 @@ __all__ = ['xtra_tfms', 'get_tfms', 'to_film_ar', 'get_data', 'get_callbacks', '
 from fastai.vision import *
 from fastai.callbacks import EarlyStoppingCallback, SaveModelCallback
 from fastai.metrics import accuracy, Precision, Recall
+
 from .custom_head import *
+from .wandb import *
+
 import wandb
-from wandb.fastai import WandbCallback
 
 # Cell
 to_film_ar = lambda h: (h, int(h * 16/9)) # h = height
@@ -66,6 +68,7 @@ cb_wandb = partial(WandbCallback,
                    log='all',
                    monitor = 'accuracy',
                    input_type = 'images')
+
 
 def cb_estop(learner, patience=5, min_delta=0.01, monitor='accuracy'):
     return EarlyStoppingCallback(learner, patience=patience, min_delta=min_delta, monitor=monitor)
