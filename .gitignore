@@ -1,3 +1,4 @@
+exported-models*
 *csv
 CinemaNet/__pycache__/*
 nbs/confusion-mat*
