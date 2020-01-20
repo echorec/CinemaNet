@@ -19,12 +19,25 @@ index = {"create_head": "01_fastai_custom_head.ipynb",
          "get_callbacks": "04_mobilenet_v2_basic.ipynb",
          "cb_estop": "04_mobilenet_v2_basic.ipynb",
          "metrics": "04_mobilenet_v2_basic.ipynb",
-         "cb_wandb": "04_mobilenet_v2_basic.ipynb"}
+         "cb_wandb": "04_mobilenet_v2_basic.ipynb",
+         "get_labels": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "il_train": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "il_valid": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "regex": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "fnames_all": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "count": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "train_fnames": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "samples_per_label": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "fnames_train": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "fnames_valid": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "lls": "05-1-MNetV2-100x177-3000L.ipynb .ipynb",
+         "get_data_3000L": "05-1-MNetV2-100x177-3000L.ipynb .ipynb"}
 
 modules = ["custom_head.py",
            "wandb.py",
            "convert.py",
-           "train_utils.py"]
+           "train_utils.py",
+           "data_3000L.py"]
 
 doc_url = "https://Synopsis.github.io/CinemaNet/"
 
