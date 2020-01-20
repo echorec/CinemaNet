@@ -8,7 +8,9 @@ CinemaNet aims to give out of the box useful classification of images / frames o
 
 The CinemaNet project aims to make a quasi `knowledge graph` of visual concepts useful to cinematographers, photographers, artists, designs, illustrators - and as such has labels ranging from composition theory to shot locations. The first round of label concents and categories is meant to provide an immediately helpful set of concepts and provide a baseline for the future. Note our label naming scheme uses a reverse DNS system - where top level naming helps to provide context for interpreting categories, concepts and sub-concepts.
 
-See <a href="https://github.com/Synopsis/CinemaNet/edit/master/Labels.md">Labels.md</a> for a list of categories and their concepts.
+The most up to date list of active labels [can be viewed here:](https://github.com/Synopsis/CinemaNet/tree/master/Labels)
+
+See [Labels.md](Labels.md) for information on the taxonomy, list of categories and their concepts (might be slightly out of date).
 
 ## The Data Set
 
