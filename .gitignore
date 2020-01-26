@@ -1,3 +1,14 @@
+exported-models*
+*csv
+CinemaNet/__pycache__/*
+nbs/confusion-mat*
+nbs/wandb
+filmgrab
+*DS_Store
+train
+valid
+models
+.ipynb_che*
 Data/pruned
 Data
 synopsis_auto_labeller/.build
