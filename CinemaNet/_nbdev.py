@@ -11,11 +11,20 @@ index = {"create_head": "utils_01_fastai_custom_head.ipynb",
          "args": "utils_03_pytorch_to_coreml.ipynb",
          "add_scaler": "utils_03_pytorch_to_coreml.ipynb",
          "save_coreml_model": "utils_03_pytorch_to_coreml.ipynb",
-         "torch_to_coreml": "utils_03_pytorch_to_coreml.ipynb"}
+         "torch_to_coreml": "utils_03_pytorch_to_coreml.ipynb",
+         "xtra_tfms": "utils_04_mobilenet_v2_basic.ipynb",
+         "get_tfms": "utils_04_mobilenet_v2_basic.ipynb",
+         "to_film_ar": "utils_04_mobilenet_v2_basic.ipynb",
+         "get_data": "utils_04_mobilenet_v2_basic.ipynb",
+         "get_callbacks": "utils_04_mobilenet_v2_basic.ipynb",
+         "cb_estop": "utils_04_mobilenet_v2_basic.ipynb",
+         "metrics": "utils_04_mobilenet_v2_basic.ipynb",
+         "cb_wandb": "utils_04_mobilenet_v2_basic.ipynb"}
 
 modules = ["custom_head.py",
            "wandb.py",
-           "convert.py"]
+           "convert.py",
+           "train_utils.py"]
 
 doc_url = "https://Synopsis.github.io/CinemaNet/"
 
