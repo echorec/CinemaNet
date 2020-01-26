@@ -5,10 +5,17 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 index = {"create_head": "utils_01_fastai_custom_head.ipynb",
          "create_cnn_model": "utils_01_fastai_custom_head.ipynb",
          "cnn_learner": "utils_01_fastai_custom_head.ipynb",
-         "WandbCallback": "utils_02_wandb_callback.ipynb"}
+         "WandbCallback": "utils_02_wandb_callback.ipynb",
+         "torch_to_onnx": "utils_03_pytorch_to_coreml.ipynb",
+         "onnx_to_coreml": "utils_03_pytorch_to_coreml.ipynb",
+         "args": "utils_03_pytorch_to_coreml.ipynb",
+         "add_scaler": "utils_03_pytorch_to_coreml.ipynb",
+         "save_coreml_model": "utils_03_pytorch_to_coreml.ipynb",
+         "torch_to_coreml": "utils_03_pytorch_to_coreml.ipynb"}
 
 modules = ["custom_head.py",
-           "wandb.py"]
+           "wandb.py",
+           "convert.py"]
 
 doc_url = "https://Synopsis.github.io/CinemaNet/"
 
