@@ -2,9 +2,11 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {}
+index = {"create_head": "utils_01_fastai_custom_head.ipynb",
+         "create_cnn_model": "utils_01_fastai_custom_head.ipynb",
+         "cnn_learner": "utils_01_fastai_custom_head.ipynb"}
 
-modules = []
+modules = ["custom_head.py"]
 
 doc_url = "https://Synopsis.github.io/CinemaNet/"
 
