@@ -88,8 +88,8 @@ def get_filmgrab_movie_images(movie_url):
 
         image_count = 0
         for image_url in movie_image_urls:
-            ext=image_url.rsplit('.')[-1]
-            wget.download(image_url, out=f"{movie_title}_{str(image_count+1)}.{ext}")
+            ext=re.sub('\?bwg.*', '', image_url.rsplit('.')[-1]) 
+            wget.download(image_url, out=f"{movie_download_folder}/{movie_title}_{image_count:02d}.{ext}")
             image_count = image_count + 1
         print(f"\n--- Downloaded {image_count} images for {movie_title}")
 
