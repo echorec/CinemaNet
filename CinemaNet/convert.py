@@ -11,10 +11,10 @@ from .custom_head import *
 def torch_to_onnx(model:nn.Module,
                   save_path   :str   = '../exported-models/',
                   model_fname :str   = 'onnx-model',
-                  img_size    :tuple = to_film_ar(224)):
+                  input_shape :tuple = (3, 224, 224)):
     'Export torch.nn model as ONNX model'
     model.eval();
-    x = torch.randn(1, 3, *img_size)
+    x = torch.randn(1, *input_shape)
     torch.onnx._export(model, x.cuda(),
                        f'{os.path.join(save_path, model_fname)}.onnx',
                        export_params=True)
