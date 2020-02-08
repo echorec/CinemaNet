@@ -102,16 +102,16 @@ def save_coreml_model(model:coremltools.proto.Model_pb2.Model,
 
 # Cell
 def torch_to_coreml(model:nn.Module,
-                    num_labels:int  = 6,
-                    save_path:str   = '../exported-models/',
-                    model_fname:str = 'best-model',
-                    mode:str        = 'classifier',
-                    img_size:tuple  = to_film_ar(224),
-                    author:str      = 'Rahul Somani / Synopsis',
-                    license:str     = 'BSD', #
-                    description:str = None):
+                    num_labels:int     = 6,
+                    save_path:str      = '../exported-models/',
+                    model_fname:str    = 'best-model',
+                    mode:str           = 'classifier',
+                    input_shape:tuple  = (3,224,224),
+                    author:str         = 'Rahul Somani / Synopsis',
+                    license:str        = 'BSD', #
+                    description:str    = None):
     'Export torch.nn model to CoreML model'
-    torch_to_onnx(model, model_fname=model_fname, img_size=img_size) # exports to disk
+    torch_to_onnx(model, model_fname=model_fname, input_shape=input_shape) # exports to disk
     mod_coreml_raw    = onnx_to_coreml(save_path, model_fname, num_labels, mode, target_ios='13')
     mod_coreml_scaler = add_scaler(mod_coreml_raw, author, license, description)
     save_coreml_model(mod_coreml_scaler, save_path, model_fname)
