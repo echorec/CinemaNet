@@ -56,7 +56,7 @@ def onnx_to_coreml(model_path:str = '../exported-models/',
         mode=mode,
         image_input_names=['input.1'],
         class_labels=[i for i in range(num_labels)], preprocessing_args=args,
-        minimum_ios_deployment_target=target_ios
+        target_ios=target_ios
     )
 
 # Cell
