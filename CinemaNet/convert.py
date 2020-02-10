@@ -3,6 +3,10 @@
 __all__ = ['torch_to_onnx', 'onnx_to_coreml', 'args', 'add_scaler', 'save_coreml_model', 'torch_to_coreml']
 
 # Cell
+
+from onnx_coreml import convert
+from onnx import onnx_pb
+
 from fastai.vision import *
 from .train_utils import *
 from .custom_head import *
@@ -25,8 +29,13 @@ import copy
 import coremltools
 import os
 
-from onnx_coreml import convert
-from onnx import onnx_pb
+# after building torch from source (1.5.0dev{something})
+# the below imports were sometimes crashing the kernel
+# experimentally, it appears that importing them first
+# works fine.
+
+# from onnx_coreml import convert
+# from onnx import onnx_pb
 
 # Cell
 args = dict(is_bgr=False,
@@ -47,7 +56,7 @@ def onnx_to_coreml(model_path:str = '../exported-models/',
         mode=mode,
         image_input_names=['input.1'],
         class_labels=[i for i in range(num_labels)], preprocessing_args=args,
-        target_ios=target_ios
+        minimum_ios_deployment_target=target_ios
     )
 
 # Cell
@@ -111,7 +120,10 @@ def torch_to_coreml(model:nn.Module,
                     license:str        = 'BSD', #
                     description:str    = None):
     'Export torch.nn model to CoreML model'
-    torch_to_onnx(model, model_fname=model_fname, input_shape=input_shape) # exports to disk
+    torch_to_onnx(model, save_path=save_path, model_fname=model_fname,
+                  input_shape=input_shape) # exports to disk
+    print('Converted PyTorch to ONNX')
+    print('Converting ONNX to CoreML\n')
     mod_coreml_raw    = onnx_to_coreml(save_path, model_fname, num_labels, mode, target_ios='13')
     mod_coreml_scaler = add_scaler(mod_coreml_raw, author, license, description)
     save_coreml_model(mod_coreml_scaler, save_path, model_fname)
