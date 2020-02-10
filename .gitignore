@@ -1,9 +1,12 @@
+nbs/Untitled*
+nbs/cat_shot-framing_keras*
+FilmGrab*
 exported-models*
 *csv
 CinemaNet/__pycache__/*
 nbs/confusion-mat*
 nbs/wandb
-filmgrab
+filmgrab*
 *DS_Store
 train
 valid
